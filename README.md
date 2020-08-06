@@ -1,8 +1,21 @@
-# starter_project_cpp
-My version of cpp_starter_project by Jason Turner
+# game_project_cpp
+Game project
 
-Linux build Travis CI:
-[![Build Status](https://travis-ci.org/spjuanjoc/starter_project_cpp.svg?branch=master)](https://travis-ci.org/spjuanjoc/starter_project_cpp)
+## Install dependencies with Conan
 
-Windows build AppVeyor:
-[![Build status](https://ci.appveyor.com/api/projects/status/0xu0u40bmg660nqb?svg=true)](https://ci.appveyor.com/project/spjuanjoc/starter-project-cpp)
+`$ conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan`
+
+````
+    libgl1-mesa-dev
+    xorg-dev
+    libxcb-render-util0-dev
+    libxcb-xkb-dev
+    libxcb-icccm4-dev
+    libxcb-image0-dev
+    libxcb-keysyms1-dev
+    libxcb-xinerama0-dev
+    
+    mkdir build
+    cd build
+    conan install .. --build imgui-sfml -s build_type=Debug
+````

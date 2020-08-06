@@ -1,28 +1,46 @@
-#include "Foo/Foo.hpp"
-#include <functional>
-#include <iostream>
-#include <map>
+#include <imgui.h>
+#include <imgui-SFML.h>
 
-void foo()
-{
-  Foo f{};
-  Bar b{f};
-  b.runDoSomething();
-}
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/System/Clock.hpp>
+#include <SFML/Window/Event.hpp>
+#include <SFML/Graphics/CircleShape.hpp>
 
 int main()
 {
-  // weird lambda
-  [out = std::ref(std::cout << "Hello ")]() { out.get() << "World\n"; }();
+  sf::RenderWindow window(sf::VideoMode(640, 480), "ImGui + SFML = <3");
+  window.setFramerateLimit(60);
+  ImGui::SFML::Init(window);
 
-  // string view
-  std::map<std::uint32_t, std::string_view> m{{1, "one"}, {2, "two"}, {3, "three"}};
+  sf::CircleShape shape(100.f);
+  shape.setFillColor(sf::Color::Green);
 
-  //Structured binding
-  for (const auto& [key, value] : m)
-  {
-    std::cout << "Key: " << key << " Value: " << value << "\n";
+  sf::Clock deltaClock;
+  while (window.isOpen()) {
+    sf::Event event;
+    while (window.pollEvent(event)) {
+      ImGui::SFML::ProcessEvent(event);
+
+      if (event.type == sf::Event::Closed) {
+        window.close();
+      }
+    }
+
+    ImGui::SFML::Update(window, deltaClock.restart());
+
+//    ImGui::ShowDemoWindow();
+
+    ImGui::Begin("Hello, world!");
+    ImGui::Button("Look at this pretty button");
+    ImGui::End();
+
+    window.clear();
+    window.draw(shape);
+    ImGui::SFML::Render(window);
+    window.display();
   }
 
-  foo();
+  ImGui::SFML::Shutdown();
+
+  return 0;
 }
