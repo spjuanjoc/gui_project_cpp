@@ -3,7 +3,10 @@ Game project
 
 ## Install dependencies with Conan
 
-`$ conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan`
+Setup bincrafters
+    
+    `$ conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan`
+
 
 ````
     libgl1-mesa-dev
