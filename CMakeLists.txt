@@ -16,21 +16,9 @@ set(SOURCES
     # src/other.cpp
     )
 
-# Setup file extensions for platform specific sources: Linux, Windows, and Apple (Darwin)
-#if(${CMAKE_SYSTEM_NAME} MATCHES "Linux") # .cc .hh
-#  set(PLATFORM_EXTENSION cc)
-#elseif(${CMAKE_SYSTEM_NAME} MATCHES "Windows") # .cxx .hxx
-#  set(PLATFORM_EXTENSION cxx)
-#elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin") # .mm .h
-#  set(PLATFORM_EXTENSION mm)
-#endif()
-#
 #set(SOURCES ${SOURCES} src/Foo/Foo.${PLATFORM_EXTENSION})
 
 message("Platform: ${CMAKE_SYSTEM_NAME}")
-
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lImGui-SFML -lsfml-graphics-s -lsfml-window-s -lsfml-network-s")
 
 # Set the project as an executable target
 add_executable(${PROJECT_NAME} ${SOURCES})
@@ -40,7 +28,7 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 # target instructions must be after add_executable or add_library instructions
 
 # Specific features
-# target_compile_features(starter_cpp PRIVATE cxx_lambda_init_captures)
+# target_compile_features(${PROJECT_NAME} PRIVATE cxx_lambda_init_captures)
 
 # Get the headers
 set(INCLUDES include include/Foo)
@@ -73,12 +61,6 @@ endif ()
 
 if (ENABLE_CONAN)
   include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-#  conan_basic_setup()
   conan_basic_setup(TARGETS)
-
-  message("Conan libs: ${CONAN_LIBS}")
-  message("Conan dir libs: ${CONAN_LIB_DIRS}")
-
-#  target_include_directories(${PROJECT_NAME} PRIVATE ${CONAN_LIB_DIRS})
   conan_target_link_libraries(${PROJECT_NAME})
 endif ()
