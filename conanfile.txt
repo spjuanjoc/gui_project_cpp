@@ -1,14 +1,5 @@
 [requires]
 imgui-sfml/2.1@bincrafters/stable
 
-[imports]
-# bin, *.so -> ./bin
-# lib, *.a -> ./bin   # Copies all .a files from packages lib folder to my "lib" folder
-
-[options]
-# imgui-sfml:shared=False
-
 [generators]
-# cmake_find_package
-# cmake_paths
 cmake
