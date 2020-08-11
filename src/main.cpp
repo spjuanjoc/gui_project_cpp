@@ -1,46 +1,75 @@
-#include <imgui.h>
-#include <imgui-SFML.h>
-
+#include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
-#include <SFML/Graphics/CircleShape.hpp>
+#include <imgui-SFML.h>
+#include <imgui.h>
+#include <spdlog/spdlog.h>
+#include <iostream>
+#include <list>
 
-int main()
+
+constexpr auto frameRate{60};
+constexpr auto modeWidth{640};
+constexpr auto modeHeight{480};
+
+int main([[maybe_unused]] int argc, [[maybe_unused]] const char* argv[])
 {
-  sf::RenderWindow window(sf::VideoMode(640, 480), "ImGui + SFML = <3");
-  window.setFramerateLimit(60);
+  spdlog::info(">>");
+  sf::RenderWindow window(sf::VideoMode(modeWidth, modeHeight), "Window title");
+  window.setFramerateLimit(frameRate);
   ImGui::SFML::Init(window);
 
-  sf::CircleShape shape(100.f);
-  shape.setFillColor(sf::Color::Green);
+  //  sf::CircleShape shape(100.f);
+  //  shape.setFillColor(sf::Color::Yellow);
 
-  sf::Clock deltaClock;
-  while (window.isOpen()) {
-    sf::Event event;
-    while (window.pollEvent(event)) {
+  constexpr auto scaleFactor = 2.0;
+  ImGui::GetStyle().ScaleAllSizes(scaleFactor);
+  ImGui::GetIO().FontGlobalScale = scaleFactor;
+
+  sf::Clock           deltaClock;
+  std::array<bool, 3> states{};
+  std::list           list{"Option1", "Option2", "Option3"};
+
+  while (window.isOpen())
+  {
+    sf::Event event{};
+    while (window.pollEvent(event))
+    {
       ImGui::SFML::ProcessEvent(event);
 
-      if (event.type == sf::Event::Closed) {
+      if (event.type == sf::Event::Closed)
+      {
         window.close();
       }
     }
 
+    // Frame logic start
     ImGui::SFML::Update(window, deltaClock.restart());
 
-//    ImGui::ShowDemoWindow();
+    ImGui::Begin("Box title");
 
-    ImGui::Begin("Hello, world!");
-    ImGui::Button("Look at this pretty button");
+    int index = 0;
+    for (const auto& item : list)
+    {
+      ImGui::Checkbox(fmt::format("{} : {}", index + 1, item).c_str(), std::next(std::begin(states), index));
+      ++index;
+    }
+    ImGui::End();
+
+    ImGui::Begin("Another box");
+    ImGui::Button("Button 1 inside box");
     ImGui::End();
 
     window.clear();
-    window.draw(shape);
+    //    window.draw(shape);
     ImGui::SFML::Render(window);
     window.display();
+    // Frame logic end
   }
 
   ImGui::SFML::Shutdown();
 
+  spdlog::info("<<");
   return 0;
 }
