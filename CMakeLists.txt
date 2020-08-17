@@ -5,7 +5,7 @@ project(game_project_cpp VERSION 0.0.1 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 
 # Options
-option(ENABLE_PCH "Enable Precompiled Headers" OFF)
+option(ENABLE_PCH   "Enable Precompiled Headers" OFF)
 option(ENABLE_TESTS "Enable tests" OFF)
 option(ENABLE_CONAN "Enable Conan" OFF)
 
@@ -62,5 +62,6 @@ endif ()
 if (ENABLE_CONAN)
   include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
   conan_basic_setup(TARGETS)
-  conan_target_link_libraries(${PROJECT_NAME})
+  conan_target_link_libraries(${PROJECT_NAME} CONAN_PKG::ImGui-SFML CONAN_PKG::spdlog CONAN_PKG::fmt)
+#  message("Conan libs: ${CONAN_LIBS}")
 endif ()
