@@ -8,13 +8,23 @@
 #include <iostream>
 #include <list>
 
-
 constexpr auto frameRate{60};
 constexpr auto modeWidth{640};
 constexpr auto modeHeight{480};
 
+void foo()
+{
+  spdlog::set_pattern("[%d-%m-%Y %T.%e %z] th[%t] %s:%!:%# [%l] %v");
+  spdlog::info(">>");
+  spdlog::info("debug message");
+  spdlog::info("<<");
+  SPDLOG_INFO("Some info message with extra details");
+}
+
 int main([[maybe_unused]] int argc, [[maybe_unused]] const char* argv[])
 {
+  spdlog::info("Hello spdlog");
+  foo();
   spdlog::info(">>");
   sf::RenderWindow window(sf::VideoMode(modeWidth, modeHeight), "Window title");
   window.setFramerateLimit(frameRate);
@@ -27,9 +37,9 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] const char* argv[])
   ImGui::GetStyle().ScaleAllSizes(scaleFactor);
   ImGui::GetIO().FontGlobalScale = scaleFactor;
 
-  sf::Clock           deltaClock;
-  std::array<bool, 3> states{};
-  std::list           list{"Option1", "Option2", "Option3"};
+  sf::Clock            deltaClock;
+  constexpr std::array options{"Option1", "Option2", "Option3"};
+  std::array<bool, options.size()> states{};
 
   while (window.isOpen())
   {
@@ -49,10 +59,10 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] const char* argv[])
 
     ImGui::Begin("Box title");
 
-    int index = 0;
-    for (const auto& item : list)
+    std::size_t index = 0;
+    for (const auto& item : options)
     {
-      ImGui::Checkbox(fmt::format("{} : {}", index + 1, item).c_str(), std::next(std::begin(states), index));
+      ImGui::Checkbox(fmt::format("{} : {}", index + 1, item).c_str(), &states.at(index));
       ++index;
     }
     ImGui::End();

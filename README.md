@@ -49,4 +49,5 @@ Build using ninja generator:
 
     ./game_project_cpp
 
-
+## spdlog format
+[spdlog](https://github.com/gabime/spdlog/wiki/3.-Custom-formatting)
