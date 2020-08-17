@@ -2,6 +2,7 @@
 imgui-sfml/2.1@bincrafters/stable
 fmt/6.2.0
 spdlog/1.5.0
+# gtest/1.10.0
 
 [generators]
 cmake

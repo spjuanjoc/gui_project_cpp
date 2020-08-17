@@ -22,5 +22,6 @@ void TestDoSomething()
 int main()
 {
   TestDoSomething();
+  // \todo add gtest
   return 0;
 }
