@@ -6,12 +6,16 @@
 #include <imgui-SFML.h>
 #include <imgui.h>
 #include <spdlog/spdlog.h>
+#include <chrono>
 #include <iostream>
 #include <list>
+#include <thread>
+
+using namespace std::chrono_literals;
 
 constexpr auto frameRate{60};
-constexpr auto modeWidth{640};
-constexpr auto modeHeight{480};
+constexpr auto modeWidth{720};
+constexpr auto modeHeight{640};
 
 constexpr const char* USAGE =
   R"(Game Project.
@@ -28,11 +32,7 @@ constexpr const char* USAGE =
 
 void foo()
 {
-  spdlog::set_pattern("[%d-%m-%Y %T.%e %z] th[%t] %s:%!:%# [%l] %v");
-  spdlog::info(">>");
-  spdlog::info("debug message");
-  spdlog::info("<<");
-  SPDLOG_INFO("Some info message with extra details");
+  spdlog::set_pattern("[%d-%m-%Y %T.%e %z] [%l]: %v");
 }
 
 int main(int argc, const char* argv[])
@@ -46,7 +46,6 @@ int main(int argc, const char* argv[])
   {
     if (arg.second.isBool())
     {
-//      std::cout << arg.first << " = " << arg.second << " type" << typeid(arg.second).name() << '\n';
       spdlog::info("{} = {}", arg.first, arg.second.asBool());
     }
     else if (arg.second.isString())
@@ -66,49 +65,61 @@ int main(int argc, const char* argv[])
   window.setFramerateLimit(frameRate);
   ImGui::SFML::Init(window);
 
-  //  sf::CircleShape shape(100.f);
-  //  shape.setFillColor(sf::Color::Yellow);
-
   constexpr auto scaleFactor = 2.0;
   ImGui::GetStyle().ScaleAllSizes(scaleFactor);
   ImGui::GetIO().FontGlobalScale = scaleFactor;
 
-  sf::Clock                        deltaClock;
   constexpr std::array             options{"Option1", "Option2", "Option3"};
   std::array<bool, options.size()> states{};
+  bool isKeyPressed{};
+
+  sf::Clock deltaClock;
 
   while (window.isOpen())
   {
+    isKeyPressed = false;
     sf::Event event{};
     while (window.pollEvent(event))
     {
       ImGui::SFML::ProcessEvent(event);
 
-      if (event.type == sf::Event::Closed)
+      switch (event.type)
       {
-        window.close();
+        case sf::Event::KeyPressed:
+        {
+          isKeyPressed = true;
+          break;
+        }
+        case sf::Event::Closed:
+          window.close();
+          break;
       }
-    }
+    } // End of poll event
 
     // Frame logic start
     ImGui::SFML::Update(window, deltaClock.restart());
 
-    ImGui::Begin("Box title");
-
-    std::size_t index = 0;
-    for (const auto& item : options)
+    // Box 1
+    ImGui::Begin("Options");
     {
-      ImGui::Checkbox(fmt::format("{} : {}", index + 1, item).c_str(), &states.at(index));
-      ++index;
+      std::size_t index = 0;
+      for (const auto& item : options)
+      {
+        ImGui::Checkbox(fmt::format("{} : {}", index + 1, item).c_str(), &states.at(index));
+        ++index;
+      }
     }
     ImGui::End();
 
-    ImGui::Begin("Another box");
-    ImGui::Button("Button 1 inside box");
+    // Box 2
+    ImGui::Begin("Key Pressed");
+    {
+      ImGui::TextUnformatted(fmt::format("Is key pressed {}", isKeyPressed).c_str());
+      std::this_thread::sleep_for(50ms);
+    }
     ImGui::End();
 
     window.clear();
-    //    window.draw(shape);
     ImGui::SFML::Render(window);
     window.display();
     // Frame logic end
