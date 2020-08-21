@@ -1,3 +1,4 @@
+#include "Events/Events.h"
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
@@ -13,11 +14,9 @@
 
 using namespace std::chrono_literals;
 
-constexpr auto frameRate{60};
-constexpr auto modeWidth{720};
-constexpr auto modeHeight{640};
+constexpr std::string_view TITLE{"some title"};
 
-constexpr const char* USAGE =
+constexpr std::string_view USAGE =
   R"(Game Project.
 
     Usage:
@@ -26,18 +25,15 @@ constexpr const char* USAGE =
     Options:
       -h --help     Show this screen.
       --version     Show version.
-      --showWin     Show the window [default: false].
-      --width=<w>   Set screen width [default: 640].
+      --width=<width>     Set screen width  [default: 720].
+      --height=<height>   Set screen height [default: 480].
+      --scale=<scale>     Set scale factor [default: 2].
+      --frameRate=<fr>    Set frame rate [default: 60].
 )";
-
-void foo()
-{
-  spdlog::set_pattern("[%d-%m-%Y %T.%e %z] [%l]: %v");
-}
 
 int main(int argc, const char* argv[])
 {
-  std::map<std::string, docopt::value> args{docopt::docopt(USAGE,
+  std::map<std::string, docopt::value> args{docopt::docopt(std::string(USAGE),
                                                            {std::next(argv), std::next(argv, argc)},
                                                            true,                        // show help if requested
                                                            "game_project_cpp 0.0.1")};  // version string
@@ -53,48 +49,32 @@ int main(int argc, const char* argv[])
       spdlog::info("{} = {}", arg.first, arg.second.asString());
     }
   }
-  const auto w = args["--width"].asLong();
-  const auto showW = args["--showWin"].asBool();
-  std::cout << "Width: " << w << ", show window: " << std::boolalpha << showW << '\n';
 
-  spdlog::info("Hello spdlog");
-  foo();
+  const auto width  = args["--width"].asLong();
+  const auto height = args["--height"].asLong();
+  const auto frameRate = args["--frameRate"].asLong();
+  const auto scale = args["--scale"].asLong();
+
+  spdlog::set_pattern("[%d-%m-%Y %T.%e %z] [%l]: %v");
   spdlog::info(">>");
 
-  sf::RenderWindow window(sf::VideoMode(modeWidth, modeHeight), "Window title");
+  sf::RenderWindow window(sf::VideoMode(width, height), std::string(TITLE));
   window.setFramerateLimit(frameRate);
-  ImGui::SFML::Init(window);
 
-  constexpr auto scaleFactor = 2.0;
-  ImGui::GetStyle().ScaleAllSizes(scaleFactor);
-  ImGui::GetIO().FontGlobalScale = scaleFactor;
+  ImGui::SFML::Init(window);
+  ImGui::GetStyle().ScaleAllSizes(scale);
+  ImGui::GetIO().FontGlobalScale = scale;
 
   constexpr std::array             options{"Option1", "Option2", "Option3"};
   std::array<bool, options.size()> states{};
-  bool isKeyPressed{};
 
   sf::Clock deltaClock;
+  Events::Handler eventsHandler;
 
   while (window.isOpen())
   {
-    isKeyPressed = false;
-    sf::Event event{};
-    while (window.pollEvent(event))
-    {
-      ImGui::SFML::ProcessEvent(event);
-
-      switch (event.type)
-      {
-        case sf::Event::KeyPressed:
-        {
-          isKeyPressed = true;
-          break;
-        }
-        case sf::Event::Closed:
-          window.close();
-          break;
-      }
-    } // End of poll event
+    eventsHandler.isKeyPressed = false;
+    eventsHandler.Process(window);
 
     // Frame logic start
     ImGui::SFML::Update(window, deltaClock.restart());
@@ -114,8 +94,8 @@ int main(int argc, const char* argv[])
     // Box 2
     ImGui::Begin("Key Pressed");
     {
-      ImGui::TextUnformatted(fmt::format("Is key pressed {}", isKeyPressed).c_str());
-      std::this_thread::sleep_for(50ms);
+      ImGui::TextUnformatted(fmt::format("Key pressed: {}", Events::keyName.at(eventsHandler.key)).c_str());
+//      std::this_thread::sleep_for(50ms);
     }
     ImGui::End();
 
