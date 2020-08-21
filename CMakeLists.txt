@@ -12,7 +12,8 @@ option(ENABLE_CONAN "Enable Conan" OFF)
 # Sources common for all platforms .cpp .hpp
 set(SOURCES
     src/main.cpp
-    src/Foo/Foo.cpp
+    src/Events/Events.cpp
+#    src/Foo/Foo.cpp
     # src/other.cpp
     )
 
@@ -31,7 +32,7 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 # target_compile_features(${PROJECT_NAME} PRIVATE cxx_lambda_init_captures)
 
 # Get the headers
-set(INCLUDES include include/Foo)
+set(INCLUDES include include/Events include/Window)
 include_directories(PUBLIC ${INCLUDES})
 target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDES})
 
@@ -62,6 +63,6 @@ endif ()
 if (ENABLE_CONAN)
   include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
   conan_basic_setup(TARGETS)
-  conan_target_link_libraries(${PROJECT_NAME} CONAN_PKG::ImGui-SFML CONAN_PKG::spdlog CONAN_PKG::fmt CONAN_PKG::docopt)
+  conan_target_link_libraries(${PROJECT_NAME} PRIVATE CONAN_PKG::ImGui-SFML CONAN_PKG::spdlog CONAN_PKG::fmt CONAN_PKG::docopt)
 #  message("Conan libs: ${CONAN_LIBS}")
 endif ()
