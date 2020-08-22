@@ -73,7 +73,6 @@ int main(int argc, const char* argv[])
 
   while (window.isOpen())
   {
-    eventsHandler.isKeyPressed = false;
     eventsHandler.Process(window);
 
     // Frame logic start

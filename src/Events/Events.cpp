@@ -18,13 +18,23 @@ void Events::Handler::Process(sf::RenderWindow& window)
     {
       case sf::Event::KeyPressed:
       {
-        isKeyPressed = true;
-        key          = event.key.code;
+        key     = event.key.code;
+        alt     = event.key.alt;
+        control = event.key.control;
+        shift   = event.key.shift;
+        system  = event.key.system;
+        break;
+      }
+      case sf::Event::KeyReleased:
+      {
+        key = sf::Keyboard::Key::Unknown;
         break;
       }
       case sf::Event::Closed:
+      {
         window.close();
         break;
+      }
     }
   }  // End of poll event
 }

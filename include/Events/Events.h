@@ -123,7 +123,10 @@ struct Handler
   void Process(sf::RenderWindow& window);
 
   int  key{-1};
-  bool isKeyPressed{};
+  bool          alt;     ///< Is the Alt key pressed?
+  bool          control; ///< Is the Control key pressed?
+  bool          shift;   ///< Is the Shift key pressed?
+  bool          system;  ///< Is the System key pressed?
 };
 
 
