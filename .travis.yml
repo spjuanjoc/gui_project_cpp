@@ -9,7 +9,10 @@ install:
 #  - pip install --user ninja
   - pip install --user conan
   - conan user
-  - sudo apt install -y libgl1-mesa-dev xorg-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-xinerama0-dev
+  - sudo apt install -y libgl1-mesa-dev
+#  libxcb-xkb-dev
+#  xorg-dev libxcb-render-util0-dev
+#  libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-xinerama0-dev
 
 #jobs:
 #  include:
