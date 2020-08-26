@@ -5,5 +5,8 @@ spdlog/1.5.0      # logger
 docopt.cpp/0.6.3  # args parser
 # gtest/1.10.0    # tests
 
+[build_requires]
+opengl/system
+
 [generators]
 cmake
