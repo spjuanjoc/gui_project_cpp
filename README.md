@@ -2,6 +2,9 @@
 
 GUI project using ImGui-SFML.
 
+|CI|Status|
+|---|---|
+|Travis|[![Build Status](https://travis-ci.org/spjuanjoc/gui_project_cpp.svg?branch=master)](https://travis-ci.org/spjuanjoc/gui_project_cpp)|
 ## Install dependencies with Conan
 
 1. Setup bincrafters
