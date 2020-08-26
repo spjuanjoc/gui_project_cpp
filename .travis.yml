@@ -3,6 +3,7 @@ language: cpp
 install:
 #  - pip install --user ninja
   - pip install --user conan
+  - conan user
 
 jobs:
   include:
@@ -16,6 +17,7 @@ jobs:
 script:
   - mkdir build
   - cd build
+  - conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
   - conan install .. --build imgui-sfml -s build_type=Debug
   - cmake .. -DENABLE_CONAN=ON -DENABLE_TESTS=ON -O0 -g
   - cmake --build . -- -j2
