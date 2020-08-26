@@ -11,7 +11,7 @@ GUI project using ImGui-SFML.
 
     `conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan`
 
-2. Install extra packages required in Linux for imgui:
+2. Install extra packages required for imgui in Linux:
 
     ````
     sudo apt install -y 

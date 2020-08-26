@@ -1,4 +1,9 @@
+os: linux
+dist: bionic
+sudo: true
 language: cpp
+compiler:
+  - gcc
 
 install:
 #  - pip install --user ninja
@@ -6,15 +11,15 @@ install:
   - conan user
   - sudo apt install -y libgl1-mesa-dev xorg-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-xinerama0-dev
 
-jobs:
-  include:
+#jobs:
+#  include:
 #    - os: osx
 #      compiler: clang
 #      osx_image: xcode11.2
-    - os: linux
-      dist: bionic
-      compiler: gcc
-      sudo: true
+#    - os: linux
+#      dist: bionic
+#      compiler: gcc
+#      sudo: true
 
 script:
   - mkdir build
