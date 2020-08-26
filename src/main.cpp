@@ -17,10 +17,10 @@ using namespace std::chrono_literals;
 constexpr std::string_view TITLE{"some title"};
 
 constexpr std::string_view USAGE =
-  R"(Game Project.
+  R"(Gui Project.
 
     Usage:
-      game_project_cpp [options]
+      gui_project_cpp [options]
 
     Options:
       -h --help     Show this screen.
@@ -36,7 +36,7 @@ int main(int argc, const char* argv[])
   std::map<std::string, docopt::value> args{docopt::docopt(std::string(USAGE),
                                                            {std::next(argv), std::next(argv, argc)},
                                                            true,                        // show help if requested
-                                                           "game_project_cpp 0.0.1")};  // version string
+                                                           "gui_project_cpp 0.0.1")};  // version string
 
   for (auto const& arg : args)
   {

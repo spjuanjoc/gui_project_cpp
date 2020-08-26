@@ -1,9 +1,6 @@
-# game_project_cpp
+# gui_project_cpp
 
-Game project.
- 
-1. Install ImGui-SFML using conan
-2. Use ImGui-SFML to show a sample window
+GUI project using ImGui-SFML.
 
 ## Install dependencies with Conan
 
@@ -11,7 +8,7 @@ Game project.
 
     `conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan`
 
-2. Install extra packages required for imgui:
+2. Install extra packages required in Linux for imgui:
 
     ````
     sudo apt install -y 
@@ -51,7 +48,7 @@ Game project.
 
 ## Run 
 
-    ./build/game_project_cpp
+    ./build/gui_project_cpp
 
 ---
 

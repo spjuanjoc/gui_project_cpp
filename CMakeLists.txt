@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(game_project_cpp VERSION 0.0.1 LANGUAGES CXX)
+project(gui_project_cpp VERSION 0.0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -67,7 +67,7 @@ endif ()
 
 ## Install commands
 install(TARGETS ${PROJECT_NAME}
-    RUNTIME DESTINATION "/opt/game_project_cpp"
+    RUNTIME DESTINATION "/opt/gui_project_cpp"
     )
 
 SET(CPACK_GENERATOR "DEB")
