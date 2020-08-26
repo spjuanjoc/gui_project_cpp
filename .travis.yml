@@ -1,7 +1,8 @@
 language: cpp
 
 install:
-  - pip install --user ninja
+#  - pip install --user ninja
+  - pip install --user conan
 
 jobs:
   include:
@@ -15,12 +16,10 @@ jobs:
 script:
   - mkdir build
   - cd build
-  - cmake ../ -DENABLE_TESTS=true
+  - conan install .. --build imgui-sfml -s build_type=Debug
+  - cmake .. -DENABLE_CONAN=ON -DENABLE_TESTS=ON -O0 -g
   - cmake --build . -- -j2
   - ctest -j2
-  - ./starter_cpp
-  - whereis ninja
-
-# TODO install Ninja
-#     - cmake ../ -DENABLE_TESTS=true -G"Ninja"
-#     - ninja -j4
+  #  - conan install .. --build imgui-sfml -s build_type=Release
+  #  - cmake .. -DENABLE_CONAN=ON -G "Ninja" -O3
+  #  - ninja -j8
