@@ -60,7 +60,12 @@ endif ()
 if (ENABLE_CONAN)
   include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
   conan_basic_setup(TARGETS)
-  conan_target_link_libraries(${PROJECT_NAME} PRIVATE CONAN_PKG::ImGui-SFML CONAN_PKG::spdlog CONAN_PKG::fmt CONAN_PKG::docopt)
+  conan_target_link_libraries(${PROJECT_NAME} PRIVATE
+      CONAN_PKG::ImGui-SFML
+      CONAN_PKG::spdlog
+      CONAN_PKG::fmt
+      CONAN_PKG::docopt
+      )
 #  message("Conan libs: ${CONAN_LIBS}")
 endif ()
 
