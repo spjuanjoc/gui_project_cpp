@@ -6,7 +6,7 @@
 #include <docopt/docopt.h>
 #include <imgui-SFML.h>
 #include <imgui.h>
-#include <spdlog/spdlog.h>
+//#include <spdlog/spdlog.h>
 #include <chrono>
 #include <iostream>
 #include <list>
@@ -42,11 +42,11 @@ int main(int argc, const char* argv[])
   {
     if (arg.second.isBool())
     {
-      spdlog::info("{} = {}", arg.first, arg.second.asBool());
+//      spdlog::info("{} = {}", arg.first, arg.second.asBool());
     }
     else if (arg.second.isString())
     {
-      spdlog::info("{} = {}", arg.first, arg.second.asString());
+//      spdlog::info("{} = {}", arg.first, arg.second.asString());
     }
   }
 
@@ -55,8 +55,8 @@ int main(int argc, const char* argv[])
   const auto frameRate = args["--frameRate"].asLong();
   const auto scale = args["--scale"].asLong();
 
-  spdlog::set_pattern("[%d-%m-%Y %T.%e %z] [%l]: %v");
-  spdlog::info(">>");
+//  spdlog::set_pattern("[%d-%m-%Y %T.%e %z] [%l]: %v");
+//  spdlog::info(">>");
 
   sf::RenderWindow window(sf::VideoMode(width, height), std::string(TITLE));
   window.setFramerateLimit(frameRate);
@@ -84,7 +84,7 @@ int main(int argc, const char* argv[])
       std::size_t index = 0;
       for (const auto& item : options)
       {
-        ImGui::Checkbox(fmt::format("{} : {}", index + 1, item).c_str(), &states.at(index));
+//        ImGui::Checkbox(fmt::format("{} : {}", index + 1, item).c_str(), &states.at(index));
         ++index;
       }
     }
@@ -93,7 +93,7 @@ int main(int argc, const char* argv[])
     // Box 2
     ImGui::Begin("Key Pressed");
     {
-      ImGui::TextUnformatted(fmt::format("Key pressed: {}", Events::keyName.at(eventsHandler.key)).c_str());
+//      ImGui::TextUnformatted(fmt::format("Key pressed: {}", Events::keyName.at(eventsHandler.key)).c_str());
 //      std::this_thread::sleep_for(50ms);
     }
     ImGui::End();
@@ -106,6 +106,6 @@ int main(int argc, const char* argv[])
 
   ImGui::SFML::Shutdown();
 
-  spdlog::info("<<");
+//  spdlog::info("<<");
   return 0;
 }
