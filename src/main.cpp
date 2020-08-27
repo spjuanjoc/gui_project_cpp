@@ -6,6 +6,7 @@
 //#include <docopt/docopt.h>
 #include <imgui-SFML.h>
 #include <imgui.h>
+#include <fmt/format.h>
 #include <spdlog/spdlog.h>
 #include <chrono>
 #include <string>
@@ -86,7 +87,7 @@ int main(int argc, const char* argv[])
       std::size_t index = 0;
       for (const auto& item : options)
       {
-//        ImGui::Checkbox(fmt::format("{} : {}", index + 1, item).c_str(), &states.at(index));
+        ImGui::Checkbox(fmt::format("{} : {}", index + 1, item).c_str(), &states.at(index));
         ++index;
       }
     }
