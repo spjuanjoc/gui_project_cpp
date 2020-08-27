@@ -18,8 +18,6 @@ addons:
       - libxcb-image0-dev
       - libxcb-keysyms1-dev
       - libxcb-xinerama0-dev
-      - gcc-7
-      - g++-7
 
 #before_install:
 #  - sudo add-apt-repository -y ppa:oibaf/graphics-drivers
@@ -30,8 +28,6 @@ install:
   - conan user
 
 script:
-  - export CC=gcc-7
-  - export CXX=g++-7
   - mkdir build
   - cd build
   - conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
