@@ -1,26 +1,21 @@
 language: cpp
 os: linux
 dist: bionic
-#sudo: false
-compiler:
-  - gcc
+compiler: gcc
 
 addons:
   apt:
     packages:
-#      - libgl1-mesa-dev
-#      - libgl1-mesa-glx
-#      - mesa-utils
-#      - xorg-dev
-#      - libxcb-xkb-dev
-#      - libxcb-render-util0-dev
-#      - libxcb-icccm4-dev
-#      - libxcb-image0-dev
-#      - libxcb-keysyms1-dev
-#      - libxcb-xinerama0-dev
-
-#before_install:
-#  - sudo add-apt-repository -y ppa:oibaf/graphics-drivers
+      - libgl1-mesa-dev
+      - libgl1-mesa-glx
+      - mesa-utils
+      - xorg-dev
+      - libxcb-xkb-dev
+      - libxcb-render-util0-dev
+      - libxcb-icccm4-dev
+      - libxcb-image0-dev
+      - libxcb-keysyms1-dev
+      - libxcb-xinerama0-dev
 
 install:
 #  - pip install --user ninja
@@ -36,12 +31,9 @@ script:
   - mkdir build
   - cd build
   - conan install .. --build imgui-sfml -s build_type=Debug
-  - conan profile list
-  - conan profile show default
   - conan profile update settings.compiler.libcxx=libstdc++11 default
-  - conan profile show default
-    #  - cmake .. -DENABLE_CONAN=ON -DENABLE_TESTS=ON -O0 -DCMAKE_BUILD_TYPE=Debug
-#  - cmake --build . -- -j2
+  - cmake .. -DENABLE_CONAN=ON -DENABLE_TESTS=ON -O0 -DCMAKE_BUILD_TYPE=Debug
+  - cmake --build . -- -j2
 #  - ctest -j2
   #  - conan install .. --build imgui-sfml -s build_type=Release
   #  - cmake .. -DENABLE_CONAN=ON -G "Ninja" -O3
