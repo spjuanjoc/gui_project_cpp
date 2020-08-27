@@ -32,7 +32,7 @@ script:
   - cd build
   - conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
   - conan install .. --build imgui-sfml -s build_type=Debug
-  - cmake .. -DENABLE_CONAN=ON -DENABLE_TESTS=ON -O0 -g
+  - cmake .. -DENABLE_CONAN=ON -DENABLE_TESTS=ON -O0 -DCMAKE_BUILD_TYPE=Debug
   - cmake --build . -- -j2
   - ctest -j2
   #  - conan install .. --build imgui-sfml -s build_type=Release

@@ -38,14 +38,14 @@ GUI project using ImGui-SFML.
 1. Build in debug mode:
 
     ````
-    cmake .. -DENABLE_CONAN=ON -DENABLE_TESTS=ON -O0 -g
+    cmake .. -DENABLE_CONAN=ON -DENABLE_TESTS=ON -O0 -DCMAKE_BUILD_TYPE=Debug
     cmake --build ./ -- -j8
     ````
 
 2. Build in release mode:
 
     ````
-    cmake .. -DENABLE_CONAN=ON -G "Ninja" -O3 
+    cmake .. -DENABLE_CONAN=ON -G "Ninja" -O3 -DCMAKE_BUILD_TYPE=Release
     ninja -j8
     ````
 
