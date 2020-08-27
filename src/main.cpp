@@ -16,8 +16,7 @@
 
 using namespace std::chrono_literals;
 
-constexpr std::string_view TITLE{"some title"};
-//const std::string TITLE{"some title"};
+constexpr const char* TITLE{"some title"};
 
 constexpr std::string_view USAGE =
   R"(Gui Project.
@@ -61,7 +60,7 @@ int main(int argc, const char* argv[])
 //  spdlog::set_pattern("[%d-%m-%Y %T.%e %z] [%l]: %v");
 //  spdlog::info(">>");
 
-  sf::RenderWindow window(sf::VideoMode(width, height), std::string(TITLE));
+  sf::RenderWindow window(sf::VideoMode(width, height), TITLE);
   window.setFramerateLimit(frameRate);
 
   ImGui::SFML::Init(window);
