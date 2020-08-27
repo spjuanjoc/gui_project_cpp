@@ -1,7 +1,7 @@
 [requires]
 imgui-sfml/2.1@bincrafters/stable
-fmt/6.2.0         # format
-# spdlog/1.7.0      # logger
+# fmt/6.2.0         # format
+spdlog/1.7.0      # logger uses fmt/7.0.1
 docopt.cpp/0.6.3  # args parser
 # gtest/1.10.0    # tests
 

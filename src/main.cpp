@@ -3,21 +3,19 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
-//#include <docopt/docopt.h>
+#include <docopt/docopt.h>
 #include <imgui-SFML.h>
 #include <imgui.h>
 #include <fmt/format.h>
-//#include <spdlog/spdlog.h>
+#include <spdlog/spdlog.h>
 #include <chrono>
-#include <string>
 #include <string_view>
-//#include <iostream>
 #include <list>
-#include <thread>
+//#include <thread>
 
 using namespace std::chrono_literals;
 
-constexpr const char* TITLE{"some title"};
+constexpr std::string_view TITLE{"some title"};
 
 constexpr std::string_view USAGE =
   R"(Gui Project.
@@ -36,7 +34,7 @@ constexpr std::string_view USAGE =
 
 int main(int argc, const char* argv[])
 {
-/*  std::map<std::string, docopt::value> args{docopt::docopt(std::string(USAGE),
+  std::map<std::string, docopt::value> args{docopt::docopt(std::string(USAGE),
                                                            {std::next(argv), std::next(argv, argc)},
                                                            true,                        // show help if requested
                                                            "gui_project_cpp 0.0.1")};  // version string
@@ -51,17 +49,17 @@ int main(int argc, const char* argv[])
     {
       spdlog::info("{} = {}", arg.first, arg.second.asString());
     }
-  }*/
+  }
 
-  const auto width  = 720; // args["--width"].asLong();
-  const auto height = 480; // args["--height"].asLong();
-  const auto frameRate = 60; // args["--frameRate"].asLong();
-  const auto scale = 2; // args["--scale"].asLong();
+  const auto width     = args["--width"].asLong();      // 720; //
+  const auto height    = args["--height"].asLong();     // 480; //
+  const auto frameRate = args["--frameRate"].asLong();  // 60; //
+  const auto scale     = args["--scale"].asLong();      // 2; //
 
-//  spdlog::set_pattern("[%d-%m-%Y %T.%e %z] [%l]: %v");
-//  spdlog::info(">>");
+  spdlog::set_pattern("[%d-%m-%Y %T.%e %z] [%l]: %v");
+  spdlog::info(">>");
 
-  sf::RenderWindow window(sf::VideoMode(width, height), TITLE);
+  sf::RenderWindow window(sf::VideoMode(width, height), std::string(TITLE));
   window.setFramerateLimit(frameRate);
 
   ImGui::SFML::Init(window);
@@ -109,6 +107,6 @@ int main(int argc, const char* argv[])
 
   ImGui::SFML::Shutdown();
 
-//  spdlog::info("<<");
+  spdlog::info("<<");
   return 0;
 }
