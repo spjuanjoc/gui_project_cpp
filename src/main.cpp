@@ -8,7 +8,8 @@
 #include <imgui.h>
 //#include <spdlog/spdlog.h>
 #include <chrono>
-#include <iostream>
+#include <string>
+//#include <iostream>
 #include <list>
 #include <thread>
 
@@ -58,7 +59,7 @@ int main(int argc, const char* argv[])
 //  spdlog::set_pattern("[%d-%m-%Y %T.%e %z] [%l]: %v");
 //  spdlog::info(">>");
 
-  sf::RenderWindow window(sf::VideoMode(width, height), "std::string(TITLE)");
+  sf::RenderWindow window(sf::VideoMode(width, height), std::string(TITLE));
   window.setFramerateLimit(frameRate);
 
   ImGui::SFML::Init(window);
