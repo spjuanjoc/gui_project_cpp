@@ -62,8 +62,8 @@ if (ENABLE_CONAN)
   conan_basic_setup(TARGETS)
   conan_target_link_libraries(${PROJECT_NAME} PRIVATE
       CONAN_PKG::ImGui-SFML
-#      CONAN_PKG::fmt
-      CONAN_PKG::spdlog
+      CONAN_PKG::fmt
+#      CONAN_PKG::spdlog
       CONAN_PKG::docopt
       )
 #  message("Conan libs: ${CONAN_LIBS}")
