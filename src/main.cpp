@@ -6,7 +6,7 @@
 //#include <docopt/docopt.h>
 #include <imgui-SFML.h>
 #include <imgui.h>
-//#include <spdlog/spdlog.h>
+#include <spdlog/spdlog.h>
 #include <chrono>
 #include <string>
 #include <string_view>
@@ -57,8 +57,8 @@ int main(int argc, const char* argv[])
   const auto frameRate = 60; // args["--frameRate"].asLong();
   const auto scale = 2; // args["--scale"].asLong();
 
-//  spdlog::set_pattern("[%d-%m-%Y %T.%e %z] [%l]: %v");
-//  spdlog::info(">>");
+  spdlog::set_pattern("[%d-%m-%Y %T.%e %z] [%l]: %v");
+  spdlog::info(">>");
 
   sf::RenderWindow window(sf::VideoMode(width, height), TITLE);
   window.setFramerateLimit(frameRate);
