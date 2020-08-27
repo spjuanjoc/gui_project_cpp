@@ -33,7 +33,7 @@ constexpr std::string_view USAGE =
 
 int main(int argc, const char* argv[])
 {
-  std::map<std::string, docopt::value> args{docopt::docopt(std::string(USAGE),
+/*  std::map<std::string, docopt::value> args{docopt::docopt(std::string(USAGE),
                                                            {std::next(argv), std::next(argv, argc)},
                                                            true,                        // show help if requested
                                                            "gui_project_cpp 0.0.1")};  // version string
@@ -42,23 +42,23 @@ int main(int argc, const char* argv[])
   {
     if (arg.second.isBool())
     {
-//      spdlog::info("{} = {}", arg.first, arg.second.asBool());
+      spdlog::info("{} = {}", arg.first, arg.second.asBool());
     }
     else if (arg.second.isString())
     {
-//      spdlog::info("{} = {}", arg.first, arg.second.asString());
+      spdlog::info("{} = {}", arg.first, arg.second.asString());
     }
-  }
+  }*/
 
-  const auto width  = args["--width"].asLong();
-  const auto height = args["--height"].asLong();
-  const auto frameRate = args["--frameRate"].asLong();
-  const auto scale = args["--scale"].asLong();
+  const auto width  = 720; // args["--width"].asLong();
+  const auto height = 480; // args["--height"].asLong();
+  const auto frameRate = 60; // args["--frameRate"].asLong();
+  const auto scale = 2; // args["--scale"].asLong();
 
 //  spdlog::set_pattern("[%d-%m-%Y %T.%e %z] [%l]: %v");
 //  spdlog::info(">>");
 
-  sf::RenderWindow window(sf::VideoMode(width, height), std::string(TITLE));
+  sf::RenderWindow window(sf::VideoMode(width, height), "std::string(TITLE)");
   window.setFramerateLimit(frameRate);
 
   ImGui::SFML::Init(window);
