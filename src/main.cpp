@@ -9,6 +9,7 @@
 //#include <spdlog/spdlog.h>
 #include <chrono>
 #include <string>
+#include <string_view>
 //#include <iostream>
 #include <list>
 #include <thread>
@@ -16,6 +17,7 @@
 using namespace std::chrono_literals;
 
 constexpr std::string_view TITLE{"some title"};
+//const std::string TITLE{"some title"};
 
 constexpr std::string_view USAGE =
   R"(Gui Project.

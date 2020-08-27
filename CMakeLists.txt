@@ -66,7 +66,6 @@ if (ENABLE_CONAN)
       CONAN_PKG::fmt
       CONAN_PKG::docopt
       )
-  target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS})
 #  message("Conan libs: ${CONAN_LIBS}")
 endif ()
 
