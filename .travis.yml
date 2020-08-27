@@ -25,13 +25,13 @@ install:
 script:
   - conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
   - conan profile list
-#  - conan profile new default --detect
-#  - conan profile update settings.compiler.libcxx=libstdc++11 default
-#  - conan profile show default
+  - conan profile new default --detect
+  - conan profile update settings.compiler.libcxx=libstdc++11 default
+  - conan profile show default
   - mkdir build
   - cd build
   - conan install .. --build imgui-sfml -s build_type=Debug
-  - conan profile update settings.compiler.libcxx=libstdc++11 default
+#  - conan profile update settings.compiler.libcxx=libstdc++11 default
   - cmake .. -DENABLE_CONAN=ON -DENABLE_TESTS=ON -O0 -DCMAKE_BUILD_TYPE=Debug
   - cmake --build . -- -j2
 #  - ctest -j2
