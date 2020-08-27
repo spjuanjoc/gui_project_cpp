@@ -4,7 +4,6 @@ dist: bionic
 #sudo: false
 compiler:
   - gcc
-cppstd: 17
 
 addons:
   apt:
