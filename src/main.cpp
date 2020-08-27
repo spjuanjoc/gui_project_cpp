@@ -3,7 +3,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
-#include <docopt/docopt.h>
+//#include <docopt/docopt.h>
 #include <imgui-SFML.h>
 #include <imgui.h>
 //#include <spdlog/spdlog.h>
