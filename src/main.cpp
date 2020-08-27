@@ -6,7 +6,7 @@
 //#include <docopt/docopt.h>
 #include <imgui-SFML.h>
 #include <imgui.h>
-#include <fmt/format.h>
+//#include <fmt/format.h>
 #include <spdlog/spdlog.h>
 #include <chrono>
 #include <string>
@@ -96,7 +96,7 @@ int main(int argc, const char* argv[])
     // Box 2
     ImGui::Begin("Key Pressed");
     {
-//      ImGui::TextUnformatted(fmt::format("Key pressed: {}", Events::keyName.at(eventsHandler.key)).c_str());
+      ImGui::TextUnformatted(fmt::format("Key pressed: {}", Events::keyName.at(eventsHandler.key)).c_str());
 //      std::this_thread::sleep_for(50ms);
     }
     ImGui::End();
