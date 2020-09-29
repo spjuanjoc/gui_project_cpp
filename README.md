@@ -2,13 +2,10 @@
 
 GUI project using ImGui-SFML.
 
-|CI|Status|
-|---|---|
-|Travis|[![Build Status](https://travis-ci.org/spjuanjoc/gui_project_cpp.svg?branch=master)](https://travis-ci.org/spjuanjoc/gui_project_cpp)|
-
-
-
-[![codecov](https://codecov.io/gh/spjuanjoc/gui_project_cpp/branch/master/graph/badge.svg)](https://codecov.io/gh/spjuanjoc/gui_project_cpp)
+| |Status|
+|---|---:|
+|Travis|[![Build Status](https://travis-ci.org/spjuanjoc/gui_project_cpp.svg?branch=main)](https://travis-ci.org/spjuanjoc/gui_project_cpp)|
+|Coverage|[![codecov](https://codecov.io/gh/spjuanjoc/gui_project_cpp/branch/main/graph/badge.svg)](https://codecov.io/gh/spjuanjoc/gui_project_cpp)|
 
 
 ## Install dependencies with Conan
