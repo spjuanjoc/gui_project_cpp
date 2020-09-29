@@ -37,3 +37,8 @@ script:
   #  - conan install .. --build imgui-sfml -s build_type=Release
   #  - cmake .. -DENABLE_CONAN=ON -G "Ninja" -O3
   #  - ninja -j8
+
+after_script:
+# Upload report to codecov
+  - bash <(curl -s https://codecov.io/bash)
+#  - bash <(curl -s https://codecov.io/bash) -x /usr/bin/gcov
