@@ -9,6 +9,9 @@ add_executable(${TEST_NAME} ${TEST_SOURCES})
 add_test(${TEST_NAME} ${TEST_NAME})
 message("Tests included")
 
+# Coverage with gcov
+#target_compile_options(profile-arcs test-coverage)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
 # Link googletest with the current project
 # Needs to add gtest/1.10.0 to conanfile
 #if (ENABLE_CONAN)
