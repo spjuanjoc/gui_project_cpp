@@ -3,6 +3,7 @@
 //
 
 #include "Foo/IFoo.hpp"
+#include "Events/Events.h"
 #include <cstdio>
 
 struct TestFoo : IFoo
