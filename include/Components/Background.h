@@ -5,25 +5,19 @@
  * @date    2021-10-12
  */
 
-#ifndef INCLUDE_COMPONENTS_BACKGROUND_H
-#define INCLUDE_COMPONENTS_BACKGROUND_H
+#ifndef COMPONENTS_BACKGROUND_H
+#define COMPONENTS_BACKGROUND_H
 
-//#include <SFML/Graphics/Sprite.hpp>
-//#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include <spdlog/spdlog.h>
 #include <memory>
 
-namespace sf
-{
-class Texture;
-class Sprite;
-}  /* sf */
-
 namespace Components
 {
-//constex
+
 class Background
 {
 public:
@@ -58,4 +52,4 @@ private:
   std::string                  m_ground{"share/textures/ground.png"};
 };
 }
-#endif /* INCLUDE_COMPONENTS_BACKGROUND_H */
+#endif /* COMPONENTS_BACKGROUND_H */

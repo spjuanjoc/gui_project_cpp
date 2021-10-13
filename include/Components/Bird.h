@@ -5,18 +5,17 @@
  * @date    2021-10-12
  */
 
-#ifndef INCLUDE_COMPONENTS_BIRD_H
-#define INCLUDE_COMPONENTS_BIRD_H
+#ifndef COMPONENTS_BIRD_H
+#define COMPONENTS_BIRD_H
 
-#include <spdlog/spdlog.h>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#include <spdlog/spdlog.h>
 #include <memory>
 
 namespace Components
 {
-
-constexpr std::uint32_t GRAVITY = 10;
+constexpr std::uint32_t GRAVITY     = 10;
 constexpr std::uint32_t FLAP_HEIGHT = 20;
 
 class Bird
@@ -29,7 +28,7 @@ public:
     m_sprite.setTexture(*m_texture);
   }
 
-  explicit Bird( std::uint32_t x, std::uint32_t y) : Bird()
+  explicit Bird(std::uint32_t x, std::uint32_t y) : Bird()
   {
     m_x_position = x;
     m_y_position = y;
@@ -70,5 +69,7 @@ private:
   std::string                  m_wing_mid_img{"share/textures/bird/1-2.png"};
   std::string                  m_wing_down_img{"share/textures/bird/1-3.png"};
 };
-}
-#endif /* INCLUDE_COMPONENTS_BIRD_H */
+
+}  // namespace Components
+
+#endif /* COMPONENTS_BIRD_H */
