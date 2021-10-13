@@ -11,14 +11,15 @@ option(ENABLE_PCH   "Enable Precompiled Headers"  False)
 option(ENABLE_TESTS "Enable tests"                False)
 
 
-set(SOURCES
-  src/main.cpp
-  src/Events/Events.cpp
+file(GLOB_RECURSE
+  SOURCE_FILES
+    src/*.cpp
+    src/main.cpp
 )
 
 
 ## Set the project as an executable target
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
 
 ## Compiler options
