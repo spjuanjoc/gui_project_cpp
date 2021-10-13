@@ -22,13 +22,13 @@ void Program::EventsHandler::Poll(sf::RenderWindow& window)
     {
       case sf::Event::KeyPressed:
       {
-        m_key     = event.key.code;
-        isAlt   = event.key.alt;
+        m_key     = static_cast<KEY_NAMES>(event.key.code);
+        isAlt     = event.key.alt;
         isControl = event.key.control;
         isShift   = event.key.shift;
         isSystem  = event.key.system;
 
-        if (isShift && Program::KEY_NAMES.at(m_key) == "W")
+        if (isShift && m_key == KEY_NAMES::W)
         {
           spdlog::info("Shift + W");
           window.close();
@@ -38,7 +38,7 @@ void Program::EventsHandler::Poll(sf::RenderWindow& window)
       }
       case sf::Event::KeyReleased:
       {
-        m_key = sf::Keyboard::Key::Unknown;
+        m_key = KEY_NAMES::UNKNOWN;
         break;
       }
       case sf::Event::MouseButtonPressed:
@@ -63,6 +63,8 @@ void Program::EventsHandler::Poll(sf::RenderWindow& window)
         window.close();
         break;
       }
+      default:
+        break;
     }
   }  // End of poll event
 }
