@@ -15,53 +15,60 @@
 
 namespace Components
 {
+
+constexpr std::uint32_t GRAVITY = 10;
+constexpr std::uint32_t FLAP_HEIGHT = 20;
+
 class Bird
 {
 public:
   Bird()
   {
     m_texture = std::make_unique<sf::Texture>();
-    m_texture->loadFromFile("share/textures/bird/1-1.png");
+    m_texture->loadFromFile(m_wing_up_img);
     m_sprite.setTexture(*m_texture);
   }
 
   explicit Bird( std::uint32_t x, std::uint32_t y) : Bird()
   {
-    m_x_pos = x;
-    m_y_pos = y;
+    m_x_position = x;
+    m_y_position = y;
   }
 
   sf::Sprite& draw()
   {
-    m_sprite.setPosition(m_x_pos, m_y_pos);
+    m_sprite.setPosition(m_x_position, m_y_position);
     return m_sprite;
+  }
+
+  void fall(const std::uint32_t& height)
+  {
+    m_y_position += GRAVITY * m_mass * m_difficulty;
+
+    if (m_y_position >= height)
+    {
+      m_y_position = 0;
+    }
+    draw();
   }
 
   void flap()
   {
-    m_speed = -200;
-  }
-
-  void fall(std::int64_t& delta)
-  {
-//    m_speed += m_delta;
-//    m_y_pos += m_speed * m_delta;
-    m_y_pos += 10;
-    if (m_y_pos >= 600)
-    {
-      m_y_pos = 0;
-    }
+    m_y_position -= FLAP_HEIGHT * m_flap_strength;
     draw();
-//    spdlog::info("speed: {}, y: {}, delta: {}.", m_speed, m_y_pos, delta);
   }
 
 private:
-  std::uint32_t                m_x_pos{};
-  std::uint32_t                m_y_pos{};
-  float                        m_speed{100};
-  float                        m_delta{1};
+  std::uint32_t                m_x_position{};
+  std::uint32_t                m_y_position{};
+  std::uint32_t                m_difficulty{1};
+  std::uint32_t                m_mass{1};
+  std::uint32_t                m_flap_strength{1};
   std::unique_ptr<sf::Texture> m_texture;
   sf::Sprite                   m_sprite;
+  std::string                  m_wing_up_img{"share/textures/bird/1-1.png"};
+  std::string                  m_wing_mid_img{"share/textures/bird/1-2.png"};
+  std::string                  m_wing_down_img{"share/textures/bird/1-3.png"};
 };
 }
 #endif /* INCLUDE_COMPONENTS_BIRD_H */
