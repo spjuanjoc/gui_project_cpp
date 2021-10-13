@@ -6,6 +6,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
 #include <imgui-SFML.h>
+#include <spdlog/spdlog.h>
 
 void Events::Handler::Process(sf::RenderWindow& window)
 {
@@ -19,15 +20,28 @@ void Events::Handler::Process(sf::RenderWindow& window)
       case sf::Event::KeyPressed:
       {
         key     = event.key.code;
-        alt     = event.key.alt;
-        control = event.key.control;
-        shift   = event.key.shift;
-        system  = event.key.system;
+        isAlt   = event.key.alt;
+        isControl = event.key.control;
+        isShift   = event.key.shift;
+        isSystem  = event.key.system;
+
+        if (isShift && Events::keyName.at(key) == "W")
+        {
+          spdlog::info("Shift + W");
+          window.close();
+        }
+
         break;
       }
       case sf::Event::KeyReleased:
       {
         key = sf::Keyboard::Key::Unknown;
+        break;
+      }
+      case sf::Event::MouseButtonPressed:
+      {
+        isClick = true;
+        spdlog::info("Clicked");
         break;
       }
       case sf::Event::Closed:
