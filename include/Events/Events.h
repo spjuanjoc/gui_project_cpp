@@ -13,7 +13,8 @@ class RenderWindow;
 
 namespace Events
 {
-const std::map<int, std::string_view> keyName{
+
+const std::map<int, std::string_view> KEY_NAMES{
   {-1, " "},          ///< Unhandled key
   {0, "A"},           ///< The A key
   {1, "B"},           ///< The B key
@@ -118,16 +119,31 @@ const std::map<int, std::string_view> keyName{
   {100, "Pause"},     ///< The Pause key
 };
 
-struct Handler
+class Handler
 {
-  void Process(sf::RenderWindow& window);
+public:
+  void Poll(sf::RenderWindow& window);
 
-  int  key{-1};
-  bool isAlt;      ///< Is the Alt key pressed?
-  bool isControl;  ///< Is the Control key pressed?
-  bool isShift;    ///< Is the Shift key pressed?
-  bool isSystem;   ///< Is the System key pressed?
-  bool isClick;
+  [[nodiscard]]
+  bool isRunning() const
+  {
+    return m_isRunning;
+  }
+
+  [[nodiscard]]
+  std::string_view pressedKey() const
+  {
+    return Events::KEY_NAMES.at(m_key);
+  }
+
+private:
+  int  m_key{-1};
+  bool isAlt{};      ///< Is the Alt key pressed?
+  bool isControl{};  ///< Is the Control key pressed?
+  bool isShift{};    ///< Is the Shift key pressed?
+  bool isSystem{};   ///< Is the System key pressed?
+  bool isClick{};
+  bool m_isRunning{false};
 };
 
 
