@@ -1,7 +1,12 @@
-//
-// Created by juan.castellanos on 20/08/20.
-//
-#pragma once
+/**
+* @brief
+*
+* @author  juan.castellanos
+* @date    2020-08-20
+*/
+
+#ifndef PROGRAM_EVENTSHANDLER_H
+#define PROGRAM_EVENTSHANDLER_H
 
 #include <map>
 
@@ -11,7 +16,7 @@ class Event;
 class RenderWindow;
 }  // namespace sf
 
-namespace Events
+namespace Program
 {
 
 const std::map<int, std::string_view> KEY_NAMES{
@@ -119,7 +124,7 @@ const std::map<int, std::string_view> KEY_NAMES{
   {100, "Pause"},     ///< The Pause key
 };
 
-class Handler
+class EventsHandler
 {
 public:
   void Poll(sf::RenderWindow& window);
@@ -133,7 +138,7 @@ public:
   [[nodiscard]]
   std::string_view pressedKey() const
   {
-    return Events::KEY_NAMES.at(m_key);
+    return Program::KEY_NAMES.at(m_key);
   }
 
 private:
@@ -146,5 +151,6 @@ private:
   bool m_isRunning{false};
 };
 
+}  // namespace Program
 
-}  // namespace Events
+#endif /* PROGRAM_EVENTSHANDLER_H */

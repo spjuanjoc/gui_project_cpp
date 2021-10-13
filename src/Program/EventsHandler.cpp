@@ -1,14 +1,17 @@
-//
-// Created by juan.castellanos on 20/08/20.
-//
+/**
+* @brief
+*
+* @author  juan.castellanos
+* @date    2020-08-20
+*/
 
-#include "Events/Events.h"
+#include "Program/EventsHandler.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
 #include <imgui-SFML.h>
 #include <spdlog/spdlog.h>
 
-void Events::Handler::Poll(sf::RenderWindow& window)
+void Program::EventsHandler::Poll(sf::RenderWindow& window)
 {
   sf::Event event{};
   while (window.pollEvent(event))
@@ -25,7 +28,7 @@ void Events::Handler::Poll(sf::RenderWindow& window)
         isShift   = event.key.shift;
         isSystem  = event.key.system;
 
-        if (isShift && Events::KEY_NAMES.at(m_key) == "W")
+        if (isShift && Program::KEY_NAMES.at(m_key) == "W")
         {
           spdlog::info("Shift + W");
           window.close();
