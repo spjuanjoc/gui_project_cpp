@@ -1,42 +1,67 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(gui_project_cpp VERSION 0.0.1 LANGUAGES CXX)
+project(gui_project_cpp
+  VERSION "0.0.2"
+  DESCRIPTION "GUI project"
+  LANGUAGES CXX
+)
 
-set(CMAKE_CXX_STANDARD 17)
 
-## Available Options
-option(ENABLE_PCH   "Enable Precompiled Headers" OFF)
-option(ENABLE_TESTS "Enable tests" OFF)
-option(ENABLE_CONAN "Enable Conan" OFF)
+option(ENABLE_PCH   "Enable Precompiled Headers"  False)
+option(ENABLE_TESTS "Enable tests"                False)
 
-## Sources common for all platforms .cpp .hpp
+
 set(SOURCES
-    src/main.cpp
-    src/Events/Events.cpp
-    )
+  src/main.cpp
+  src/Events/Events.cpp
+)
 
-#set(SOURCES ${SOURCES} src/Foo/Foo.${PLATFORM_EXTENSION})
-
-message("Platform: ${CMAKE_SYSTEM_NAME}")
 
 ## Set the project as an executable target
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-# --
-# --
-##! target instructions must be after add_executable or add_library instructions
-
-## Specific features
-# target_compile_features(${PROJECT_NAME} PRIVATE cxx_lambda_init_captures)
-
-## Get the headers
-set(INCLUDES include include/Events include/Window)
-include_directories(PUBLIC ${INCLUDES})
-target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDES})
 
 ## Compiler options
 include(cmake/CompilerOptions.cmake)
 set_project_options(${PROJECT_NAME})
+
+
+## Setup Conan
+if (NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
+  message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
+  file(DOWNLOAD
+      "https://raw.githubusercontent.com/conan-io/cmake-conan/master/conan.cmake"
+      "${CMAKE_BINARY_DIR}/conan.cmake"
+      )
+endif ()
+
+include(${CMAKE_BINARY_DIR}/conan.cmake)
+#conan_add_remote(NAME conancenter URL https://center.conan.io)
+conan_check(REQUIRED)
+conan_cmake_autodetect(settings)
+#conan_cmake_install(PATH_OR_REFERENCE ${CMAKE_CURRENT_SOURCE_DIR}/conanfile.txt BUILD missing SETTINGS ${settings})
+conan_cmake_run(CONANFILE conanfile.txt BASIC_SETUP NO_OUTPUT_DIRS BUILD missing SETTINGS ${settings})
+
+
+## Find third-party packages
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_BINARY_DIR})
+find_package(fmt REQUIRED)
+find_package(ImGui-SFML REQUIRED)
+find_package(spdlog REQUIRED)
+find_package(docopt REQUIRED)
+
+
+## Target
+target_link_libraries(${PROJECT_NAME}
+  PRIVATE
+    fmt::fmt
+    ImGui-SFML::ImGui-SFML
+    spdlog::spdlog
+    docopt::docopt
+)
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
+target_include_directories(${PROJECT_NAME} PRIVATE include)
+
 
 ## Check custom options
 if (ENABLE_PCH) # Since CMake 3.15
@@ -45,36 +70,21 @@ if (ENABLE_PCH) # Since CMake 3.15
 endif ()
 
 if (ENABLE_TESTS)
-  enable_testing()
+  message(STATUS "Tests enabled")
+  enable_testing() # Must be placed before add_subdirectory
   add_subdirectory(test)
-elseif ()
-  message("Tests not included")
 endif ()
 
-#if (ENABLE_FUZZ_TESTS)
-#  add_subdirectory(fuzz_test)
-#elseif ()
-#  message("Fuzz Tests not included")
-#endif ()
 
-if (ENABLE_CONAN)
-  include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-  conan_basic_setup(TARGETS)
-  conan_target_link_libraries(${PROJECT_NAME} PRIVATE
-      CONAN_PKG::ImGui-SFML
-      CONAN_PKG::fmt
-      CONAN_PKG::spdlog
-      CONAN_PKG::docopt
-      )
-#  message("Conan libs: ${CONAN_LIBS}")
-endif ()
+## Copy resources
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/share DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 
 ## Install commands
 install(TARGETS ${PROJECT_NAME}
-    RUNTIME DESTINATION "/opt/gui_project_cpp"
+    RUNTIME DESTINATION "/opt/${PROJECT_NAME}"
     )
 
 SET(CPACK_GENERATOR "DEB")
-set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Juan Caste <juancho.312@hotmail.com>")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Juan Jose Castellanos <juancho.312@hotmail.com>")
 include(CPack)
