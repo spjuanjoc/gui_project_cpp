@@ -8,7 +8,7 @@
 #include <imgui-SFML.h>
 #include <spdlog/spdlog.h>
 
-void Events::Handler::Process(sf::RenderWindow& window)
+void Events::Handler::Poll(sf::RenderWindow& window)
 {
   sf::Event event{};
   while (window.pollEvent(event))
@@ -19,13 +19,13 @@ void Events::Handler::Process(sf::RenderWindow& window)
     {
       case sf::Event::KeyPressed:
       {
-        key     = event.key.code;
+        m_key     = event.key.code;
         isAlt   = event.key.alt;
         isControl = event.key.control;
         isShift   = event.key.shift;
         isSystem  = event.key.system;
 
-        if (isShift && Events::keyName.at(key) == "W")
+        if (isShift && Events::KEY_NAMES.at(m_key) == "W")
         {
           spdlog::info("Shift + W");
           window.close();
@@ -35,17 +35,28 @@ void Events::Handler::Process(sf::RenderWindow& window)
       }
       case sf::Event::KeyReleased:
       {
-        key = sf::Keyboard::Key::Unknown;
+        m_key = sf::Keyboard::Key::Unknown;
         break;
       }
       case sf::Event::MouseButtonPressed:
       {
         isClick = true;
-        spdlog::info("Clicked");
+
+        if (m_isRunning)
+        {
+          m_isRunning = false;
+          spdlog::info("Stop");
+        }
+        else
+        {
+          m_isRunning = true;
+          spdlog::info("Start");
+        }
         break;
       }
       case sf::Event::Closed:
       {
+        spdlog::info("Bye");
         window.close();
         break;
       }
