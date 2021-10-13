@@ -55,12 +55,12 @@ int main(int argc, const char* argv[])
     if(game.isRunning())
     {
       bird.fall(args.height);
-    }
 
-    if (game.pressedKey() == "Space")
-    {
-      spdlog::info("flap");
-      bird.flap();
+      if (game.pressedKey() == "Space")
+      {
+        spdlog::info("flap");
+        bird.flap();
+      }
     }
 
     window.draw(birdSprite);
