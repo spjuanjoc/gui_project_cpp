@@ -40,23 +40,24 @@ int main(int argc, const char* argv[])
   ImGui::GetStyle().ScaleAllSizes(args.scale);
   ImGui::GetIO().FontGlobalScale = args.scale;
 
-  Components::Background bg(args.height);
+  const auto& window_size = window.getSize();
+  Components::Background background(window_size);
   Components::Bird bird;
   const sf::Sprite& birdSprite = bird.draw();
-  std::int64_t delta = 0.0;
 
   while (window.isOpen())
   {
     game.Poll(window);
     ImGui::SFML::Update(window, deltaClock.restart());
     window.clear();
-    bg.draw(window);
+    background.draw(window);
 
     if(game.isRunning())
     {
+      background.move();
       bird.fall(args.height);
 
-      if (game.pressedKey() == "Space")
+      if (game.pressedKey() == Program::KEY_NAMES::Space)
       {
         spdlog::info("flap");
         bird.flap();
