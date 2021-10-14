@@ -23,8 +23,8 @@ constexpr auto USAGE     = R"(Gui Project.
     Options:
       -h --help     Show this screen.
       --version     Show version.
-      --width=<width>     Set screen width  [default: 720].
-      --height=<height>   Set screen height [default: 480].
+      --width=<width>     Set screen width  [default: 480].
+      --height=<height>   Set screen height [default: 720].
       --scale=<scale>     Set scale factor [default: 2].
       --frameRate=<fr>    Set frame rate [default: 60].
       --startX=<X>        Set the start X position [default: 0].
