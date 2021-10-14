@@ -241,7 +241,13 @@ public:
   }
 
   [[nodiscard]]
-  std::string_view pressedKey() const
+  KEY_NAMES pressedKey() const
+  {
+    return static_cast<KEY_NAMES>(m_key);
+  }
+
+  [[nodiscard]]
+  std::string_view pressedKeyName() const
   {
     return Program::KEY_STRINGS.at(m_key);
   }
