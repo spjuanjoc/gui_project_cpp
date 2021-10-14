@@ -16,7 +16,7 @@
 namespace Components
 {
 constexpr std::uint32_t GRAVITY     = 10;
-constexpr std::uint32_t FLAP_HEIGHT = 20;
+constexpr std::uint32_t FLAP_HEIGHT = 18;
 
 class Bird
 {
@@ -26,12 +26,6 @@ public:
     m_texture = std::make_unique<sf::Texture>();
     m_texture->loadFromFile(m_wing_up_img);
     m_sprite.setTexture(*m_texture);
-  }
-
-  explicit Bird(std::uint32_t x, std::uint32_t y) : Bird()
-  {
-    m_x_position = x;
-    m_y_position = y;
   }
 
   sf::Sprite& draw()
@@ -44,7 +38,7 @@ public:
   {
     m_y_position += GRAVITY * m_mass * m_difficulty;
 
-    if (m_y_position >= height)
+    if (m_y_position >= static_cast<float>(height))
     {
       m_y_position = 0;
     }
@@ -58,11 +52,11 @@ public:
   }
 
 private:
-  std::uint32_t                m_x_position{};
-  std::uint32_t                m_y_position{};
-  std::uint32_t                m_difficulty{1};
-  std::uint32_t                m_mass{1};
-  std::uint32_t                m_flap_strength{1};
+  float                        m_x_position{50};
+  float                        m_y_position{};
+  float                        m_difficulty{1};
+  float                        m_mass{1};
+  float                        m_flap_strength{1};
   std::unique_ptr<sf::Texture> m_texture;
   sf::Sprite                   m_sprite;
   std::string                  m_wing_up_img{"share/textures/bird/1-1.png"};
