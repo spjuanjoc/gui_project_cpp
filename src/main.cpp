@@ -1,10 +1,13 @@
 /**
-* @brief
-*
-* @author  juan.castellanos
-* @date    2021-10-12
+ * @brief
+ *
+ * @author  juan.castellanos
+ * @date    2021-10-12
+
+ * @see (https://github.com/AlexZihaoXu/CppFlappyBird.git)
 */
 
+#include "Components/Pipes.h"
 #include "Components/Background.h"
 #include "Components/Bird.h"
 #include "Program/Arguments.h"
@@ -15,11 +18,11 @@
 #include <imgui-SFML.h>
 #include <imgui.h>
 #include <spdlog/spdlog.h>
-#include <chrono>
-#include <string_view>
+//#include <chrono>
+//#include <string_view>
 //#include <thread>
 
-using namespace std::chrono_literals;
+//using namespace std::chrono_literals;
 
 constexpr auto WINDOW_TITLE = "Flappy Bird C++";
 
@@ -41,9 +44,11 @@ int main(int argc, const char* argv[])
   ImGui::GetIO().FontGlobalScale = args.scale;
 
   const auto& window_size = window.getSize();
-  Components::Background background(window_size);
+  Components::Background background;
   Components::Bird bird;
   const sf::Sprite& birdSprite = bird.draw();
+  background.setWindowSize(window_size);
+  background.setXSpeed(5);
 
   while (window.isOpen())
   {
@@ -59,7 +64,7 @@ int main(int argc, const char* argv[])
 
       if (game.pressedKey() == Program::KEY_NAMES::Space)
       {
-        spdlog::info("flap");
+        spdlog::debug("flap");
         bird.flap();
       }
     }
