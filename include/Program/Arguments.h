@@ -15,10 +15,10 @@ namespace Program
 {
 constexpr auto VERSION   = "gui_project_cpp 0.0.2";
 constexpr auto SHOW_HELP = true;
-constexpr auto USAGE     = R"(Gui Project.
+constexpr auto USAGE     = R"(Flappy Bird C++.
 
     Usage:
-      gui_project_cpp [options]
+      flappy_bird_cpp [options]
 
     Options:
       -h --help     Show this screen.

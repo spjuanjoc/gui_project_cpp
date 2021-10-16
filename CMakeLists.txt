@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(gui_project_cpp
+project(flappy_bird_cpp
   VERSION "0.0.2"
   DESCRIPTION "GUI project"
   LANGUAGES CXX
