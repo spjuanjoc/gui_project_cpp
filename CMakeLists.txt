@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 
 project(flappy_bird_cpp
-  VERSION "0.0.2"
-  DESCRIPTION "GUI project"
+  VERSION "0.0.3"
+  DESCRIPTION "Flappy Bird in C++ with ImGui+SFML"
   LANGUAGES CXX
 )
 
@@ -58,10 +58,13 @@ target_link_libraries(${PROJECT_NAME}
     fmt::fmt
     ImGui-SFML::ImGui-SFML
     spdlog::spdlog
-    docopt::docopt
 )
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
-target_include_directories(${PROJECT_NAME} PRIVATE include)
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
+target_include_directories(${PROJECT_NAME}
+  PRIVATE
+    include
+    ${argparse_INCLUDE_DIRS}
+)
 
 
 ## Check custom options
