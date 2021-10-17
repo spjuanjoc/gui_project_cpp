@@ -8,62 +8,47 @@
 #ifndef PROGRAM_ARGUMENTS_H
 #define PROGRAM_ARGUMENTS_H
 
-#include <docopt/docopt.h>
-#include <spdlog/spdlog.h>
+#include <argparse/argparse.hpp>
 
 namespace Program
 {
-constexpr auto VERSION   = "gui_project_cpp 0.0.2";
-constexpr auto SHOW_HELP = true;
-constexpr auto USAGE     = R"(Flappy Bird C++.
-
-    Usage:
-      flappy_bird_cpp [options]
-
-    Options:
-      -h --help     Show this screen.
-      --version     Show version.
-      --width=<width>     Set screen width  [default: 480].
-      --height=<height>   Set screen height [default: 720].
-      --scale=<scale>     Set scale factor [default: 2].
-      --frameRate=<fr>    Set frame rate [default: 60].
-      --startX=<X>        Set the start X position [default: 0].
-      --startY=<Y>        Set the start Y position [default: 0].
-)";
+constexpr auto          NAME           = "flappy_bird_cpp";
+constexpr auto          VERSION        = "0.0.3";
+constexpr auto          INITIAL_SPEED  = 5.0F;
+constexpr std::uint32_t MAX_FRAME_RATE = 30;
+constexpr std::uint32_t WINDOW_HEIGHT  = 720;
+constexpr auto          WINDOW_SCALE   = 1.0F;
+constexpr std::uint32_t WINDOW_WIDTH   = 480;
 
 struct Arguments
 {
   std::uint32_t width{};
   std::uint32_t height{};
-  std::uint32_t frameRate{};
-  std::uint32_t startX{};
-  std::uint32_t startY{};
+  std::uint32_t frame_rate{};
+  float         speed{};
   float         scale{};
+  //  std::uint32_t startX{};
+  //  std::uint32_t startY{};
 };
 
 static Arguments parseArguments(int argc, const char* argv[])
 {
-  std::map<std::string, docopt::value> args{docopt::docopt(USAGE, {std::next(argv), std::next(argv, argc)}, SHOW_HELP, VERSION)};
+  Arguments                arguments{};
+  argparse::ArgumentParser parser(NAME, VERSION);
 
-  for (auto const& arg : args)
-  {
-    if (arg.second.isBool())
-    {
-      spdlog::info("{} = {}", arg.first, arg.second.asBool());
-    }
-    else if (arg.second.isString())
-    {
-      spdlog::info("{} = {}", arg.first, arg.second.asString());
-    }
-  }
+  parser.add_argument("-w", "--width").help("The screen width").default_value(WINDOW_WIDTH).scan<'i', std::uint32_t>();
+  parser.add_argument("-h", "--height").help("The screen height").default_value(WINDOW_HEIGHT).scan<'i', std::uint32_t>();
+  parser.add_argument("-r", "--frame_rate").help("The frame-per-seconds rate limit").default_value(MAX_FRAME_RATE).scan<'i', std::uint32_t>();
+  parser.add_argument("-s", "--scale").help("The window scale").default_value(WINDOW_SCALE).scan<'f', float>();
+  parser.add_argument("-i", "--initial_speed").help("The move speed").default_value(INITIAL_SPEED).scan<'f', float>();
 
-  Arguments arguments{};
-  arguments.width     = static_cast<std::uint32_t>(args["--width"].asLong());
-  arguments.height    = static_cast<std::uint32_t>(args["--height"].asLong());
-  arguments.frameRate = static_cast<std::uint32_t>(args["--frameRate"].asLong());
-  arguments.startX    = static_cast<std::uint32_t>(args["--startX"].asLong());
-  arguments.startY    = static_cast<std::uint32_t>(args["--startY"].asLong());
-  arguments.scale     = static_cast<float>(args["--scale"].asLong());
+  parser.parse_args(argc, argv);
+
+  arguments.width     = parser.get<std::uint32_t>("--width");
+  arguments.height    = parser.get<std::uint32_t>("--height");
+  arguments.frame_rate = parser.get<std::uint32_t>("--frame_rate");
+  arguments.scale     = parser.get<float>("--scale");
+  arguments.speed     = parser.get<float>("--initial_speed");
 
   return arguments;
 }
