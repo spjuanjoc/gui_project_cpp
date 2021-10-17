@@ -6,10 +6,10 @@
 */
 
 #include "Program/EventsHandler.h"
+#include "Program/Logger.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
 #include <imgui-SFML.h>
-#include <spdlog/spdlog.h>
 
 void Program::EventsHandler::Poll(sf::RenderWindow& window)
 {
@@ -30,7 +30,7 @@ void Program::EventsHandler::Poll(sf::RenderWindow& window)
 
         if (isShift && m_key == KEY_NAMES::W)
         {
-          spdlog::info("Shift + W");
+          Logger::Info("Shift + W");
           window.close();
         }
 
@@ -48,18 +48,18 @@ void Program::EventsHandler::Poll(sf::RenderWindow& window)
         if (m_isRunning)
         {
           m_isRunning = false;
-          spdlog::info("Stop");
+          Logger::Info("Stop");
         }
         else
         {
           m_isRunning = true;
-          spdlog::info("Start");
+          Logger::Info("Start");
         }
         break;
       }
       case sf::Event::Closed:
       {
-        spdlog::info("Bye");
+        Logger::Info("Bye");
         window.close();
         break;
       }
