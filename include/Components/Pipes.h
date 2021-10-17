@@ -8,19 +8,21 @@
 #ifndef COMPONENTS_PIPEPAIR_H
 #define COMPONENTS_PIPEPAIR_H
 
+#include <Program/Logger.h>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
-#include <spdlog/spdlog.h>
 #include <algorithm>
 #include <random>
 
 namespace Components
 {
 constexpr auto       TEN_PERCENT   = 0.1F;
-constexpr auto       FIFTY_PERCENT = 0.5F;
-constexpr std::array pipe_y_pos{-100, -75, -50, -25, 0, 25, 50, 75, 100, 125, 150};
+constexpr auto       INITIAL_SPEED  = 5;
+constexpr auto       INITIAL_WIDTH  = 480;
+constexpr auto       INITIAL_HEIGHT = 720;
+
 
 struct WindowSize
 {
@@ -31,88 +33,29 @@ struct WindowSize
 class PipePair
 {
 public:
-  PipePair()
-  {
-    loadTexturesFiles();
-    setTextures();
+  PipePair();
 
-    m_y_offset   = m_window_size.height / 2;
-    m_x_position = m_window_size.width * 2;
+  void draw(sf::RenderWindow& window);
 
-    m_upper_sprite.setPosition(m_x_position, m_y_position + m_y_offset);
-    m_lower_sprite.setPosition(m_x_position, m_y_position - m_y_offset);
-    m_texture_width = static_cast<float>(m_lower_texture.getSize().x);
-  }
+  void move();
 
-  void draw(sf::RenderWindow& window)
-  {
-    window.draw(m_upper_sprite);
-    window.draw(m_lower_sprite);
-  }
+  void setWindowSize(const sf::Vector2<std::uint32_t>& window_size);
 
-  void move()
-  {
-    if (m_x_position <= -(m_texture_width))
-    {
-      m_x_position = (m_window_size.width * 2); // review this
-      m_y_position = nextPipesHeight();
-    }
+  void setXPosition(float x);
 
-    m_x_position -= m_x_speed;
-    m_upper_sprite.setPosition(m_x_position, m_y_position + m_y_offset);
-    m_lower_sprite.setPosition(m_x_position, m_y_position - m_y_offset);
-  }
+  void setXSpeed(float speed);
 
-  void setWindowSize(const sf::Vector2<std::uint32_t>& window_size)
-  {
-    m_window_size.height = static_cast<float>(window_size.y);
-    m_window_size.width  = static_cast<float>(window_size.x);
-  };
-
-  void setXPosition(float x)
-  {
-    m_x_position += x + m_texture_width;
-  };
-
-  void setXSpeed(float speed)
-  {
-    m_x_speed = speed;
-  }
-
-  void setColor(const sf::Color& color)
-  {
-    m_upper_sprite.setColor(color);
-    m_lower_sprite.setColor(color);
-  }
+  void setColor(const sf::Color& color);
 
 private:
-  void loadTexturesFiles()
-  {
-    m_image.loadFromFile(m_file);
-    m_upper_texture.loadFromImage(m_image);
-    m_image.flipVertically();
-    m_lower_texture.loadFromImage(m_image);
-  }
+  void loadTexturesFiles();
 
-  void setTextures()
-  {
-    m_upper_sprite.setTexture(m_upper_texture);
-    m_lower_sprite.setTexture(m_lower_texture);
-  }
+  void setTextures();
 
-  static float nextPipesHeight()
-  {
-    std::vector<int> out;
-    size_t           elements = 1;
+  static float nextPipesHeight();
 
-    std::sample(std::begin(pipe_y_pos), std::end(pipe_y_pos), std::back_inserter(out), elements, std::mt19937{std::random_device{}()});
-    fmt::print("a random number from {}: {}\n ", "pipe_y_pos", out[0]);
-
-    return static_cast<float>(out[0]);
-  }
-
-  WindowSize        m_window_size{480, 720};
-  float             m_x_speed{5};
+  WindowSize        m_window_size{INITIAL_WIDTH, INITIAL_HEIGHT};
+  float             m_x_speed{INITIAL_SPEED};
   float             m_x_position{0};
   float             m_y_position{0};
   float             m_y_offset{0};
