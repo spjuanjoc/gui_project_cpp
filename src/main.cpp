@@ -41,24 +41,31 @@ int main(int argc, const char* argv[])
   Components::Background background;
   Components::Bird bird;
   bird.setEventHandler(&game);
-  const sf::Sprite& birdSprite = bird.draw();
+  bird.setWindow(&window);
   background.setWindowSize(window_size);
   background.setXSpeed(args.speed);
+  long long int us = 0;
 
   while (window.isOpen())
   {
-    game.Poll(window);
+    game.poll(window);
+    us = deltaClock.getElapsedTime().asMicroseconds();
     ImGui::SFML::Update(window, deltaClock.restart());
+
     window.clear();
     background.draw(window);
+    background.moveGround();
+    bird.draw(window);
 
     if(game.isRunning())
     {
       background.move();
-      bird.move(args.height);
+      bird.move(us);
     }
-
-    window.draw(birdSprite);
+    else
+    {
+      bird.stand(us);
+    }
 
     ImGui::SFML::Render(window);
     window.display();
