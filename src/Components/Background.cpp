@@ -43,7 +43,6 @@ void Background::draw(sf::RenderWindow& window)
 
 void Background::move()
 {
-  moveGround();
   m_pipes_1->move();
   m_pipes_2->move();
 }
