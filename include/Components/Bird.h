@@ -14,6 +14,10 @@
 #include <spdlog/spdlog.h>
 #include <memory>
 
+namespace sf
+{
+class RenderWindow;
+}
 
 namespace Program
 {
@@ -23,36 +27,50 @@ class EventsHandler;
 namespace Components
 {
 constexpr std::uint32_t GRAVITY     = 10;
-constexpr std::uint32_t FLAP_HEIGHT = 18;
+constexpr std::uint32_t FLAP_HEIGHT = GRAVITY + 1;
 constexpr std::uint32_t BIRD_START_X = 50;
+constexpr std::uint32_t BIRD_START_Y = 50;
 
 class Bird
 {
 public:
   Bird();
 
-  sf::Sprite& draw();
+  sf::Sprite& getSprite();
 
-  void move(std::uint32_t window_height);
+  void draw(sf::RenderWindow& window);
 
-  void fall(const std::uint32_t& height);
+  void stand(long long int elapsed_us);
+
+  void move(long long int elapsed_us);
+
+  void fall();
 
   void flap();
 
+  void wing();
+
   void setEventHandler(Program::EventsHandler* event);
 
+  void setWindow(sf::RenderWindow* window);
+
 private:
+  float                        m_angle{};
+  bool                         m_is_flapping{};
+  float                        m_y_delta{};
+  size_t                       m_current_frame{};
+  std::uint32_t                m_delta{};
   float                        m_x_position{BIRD_START_X};
-  float                        m_y_position{};
+  float                        m_y_position{BIRD_START_Y};
+  float                        m_window_width{};
+  float                        m_window_height{};
   float                        m_difficulty{1};
   float                        m_mass{1};
-  float                        m_flap_strength{1};
-  std::unique_ptr<sf::Texture> m_texture;
+  float                        m_flap_strength{2};
   sf::Sprite                   m_sprite;
-  std::string                  m_wing_up_img{"share/textures/bird/1-1.png"};
-  std::string                  m_wing_mid_img{"share/textures/bird/1-2.png"};
-  std::string                  m_wing_down_img{"share/textures/bird/1-3.png"};
   Program::EventsHandler*      m_event{nullptr};
+  sf::RenderWindow*            m_window{nullptr};
+  std::vector<std::unique_ptr<sf::Texture>> m_textures;
 };
 
 }  // namespace Components
