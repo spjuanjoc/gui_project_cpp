@@ -232,12 +232,17 @@ const std::map<KEY_NAMES, std::string_view> KEY_STRINGS{
 class EventsHandler
 {
 public:
-  void Poll(sf::RenderWindow& window);
+  void poll(sf::RenderWindow& window);
 
   [[nodiscard]]
   bool isRunning() const
   {
     return m_isRunning;
+  }
+
+  void pause()
+  {
+    m_isRunning = false;
   }
 
   [[nodiscard]]
