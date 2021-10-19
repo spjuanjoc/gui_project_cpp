@@ -30,12 +30,12 @@ public:
 
   void setXSpeed(float speed);
 
+  void moveGround();
 private:
+
   void loadTexturesFiles();
 
   void setTextures();
-
-  void moveGround();
 
   WindowSize                m_window_size{INITIAL_WIDTH, INITIAL_HEIGHT};
   float                     m_x_speed{INITIAL_SPEED};
