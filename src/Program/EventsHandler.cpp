@@ -11,7 +11,7 @@
 #include <SFML/Window/Event.hpp>
 #include <imgui-SFML.h>
 
-void Program::EventsHandler::Poll(sf::RenderWindow& window)
+void Program::EventsHandler::poll(sf::RenderWindow& window)
 {
   sf::Event event{};
   while (window.pollEvent(event))
@@ -31,6 +31,7 @@ void Program::EventsHandler::Poll(sf::RenderWindow& window)
         if (isShift && m_key == KEY_NAMES::W)
         {
           Logger::Info("Shift + W");
+          Logger::Info("Close");
           window.close();
         }
 
@@ -48,7 +49,7 @@ void Program::EventsHandler::Poll(sf::RenderWindow& window)
         if (m_isRunning)
         {
           m_isRunning = false;
-          Logger::Info("Stop");
+          Logger::Info("Pause");
         }
         else
         {
