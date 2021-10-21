@@ -8,26 +8,20 @@
 #ifndef PROGRAM_LOGGER_H
 #define PROGRAM_LOGGER_H
 
-#include "spdlog/spdlog.h"
-#include "spdlog/sinks/rotating_file_sink.h"  // support for rotating file logging
-#include "spdlog/sinks/stdout_color_sinks.h"  // or "../stdout_sinks.h" if no colors needed
-
+#include <spdlog/spdlog.h>
+#include <spdlog/sinks/rotating_file_sink.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
 
 namespace Logger
 {
 constexpr auto LOGGER_NAME     = "multi_sink";
 constexpr auto LOGGER_FILENAME = "logs/file_logger.log";
-constexpr auto MAX_FILE_SIZE   = 1024 * 1024 * 5;  // 5 MB
+constexpr auto MAX_FILE_SIZE   = 1024 * 1024 * 2;  // 2 MB supported by Code Insight
 constexpr auto MAX_FILES       = 5;
-constexpr auto CONSOLE_LEVEL = spdlog::level::level_enum::info;
-constexpr auto FILE_LEVEL = spdlog::level::level_enum::trace;
+constexpr auto CONSOLE_LEVEL   = spdlog::level::level_enum::info;
+constexpr auto FILE_LEVEL      = spdlog::level::level_enum::trace;
 
-
-class ISpdLogger
-{
-};
-
-class SpdLogger : ISpdLogger
+class SpdLogger
 {
 protected:
   SpdLogger();
