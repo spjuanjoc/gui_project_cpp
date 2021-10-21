@@ -49,7 +49,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_BINARY_DIR})
 find_package(fmt REQUIRED)
 find_package(ImGui-SFML REQUIRED)
 find_package(spdlog REQUIRED)
-find_package(docopt REQUIRED)
+find_package(argparse REQUIRED)
 
 
 ## Target
@@ -82,12 +82,13 @@ endif ()
 
 ## Copy resources
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/share DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+#file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/res DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 
 ## Install commands
 install(TARGETS ${PROJECT_NAME}
-    RUNTIME DESTINATION "/opt/${PROJECT_NAME}"
-    )
+  RUNTIME DESTINATION "/opt/${PROJECT_NAME}"
+)
 
 SET(CPACK_GENERATOR "DEB")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Juan Jose Castellanos <juancho.312@hotmail.com>")
