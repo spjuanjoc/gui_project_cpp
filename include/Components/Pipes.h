@@ -8,7 +8,7 @@
 #ifndef COMPONENTS_PIPEPAIR_H
 #define COMPONENTS_PIPEPAIR_H
 
-#include <Program/Logger.h>
+#include "Program/Logger.h"
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
@@ -39,6 +39,8 @@ public:
 
   void move();
 
+  void stop();
+
   void setWindowSize(const sf::Vector2<std::uint32_t>& window_size);
 
   void setXPosition(float x);
@@ -47,6 +49,10 @@ public:
 
   void setColor(const sf::Color& color);
 
+  sf::Sprite& getLowSprite();
+
+  sf::Sprite& getUpSprite();
+
 private:
   void loadTexturesFiles();
 
@@ -54,17 +60,18 @@ private:
 
   static float nextPipesHeight();
 
-  WindowSize        m_window_size{INITIAL_WIDTH, INITIAL_HEIGHT};
+  bool              m_is_stopped{};
   float             m_x_speed{INITIAL_SPEED};
   float             m_x_position{0};
   float             m_y_position{0};
   float             m_y_offset{0};
   float             m_x_offset{0};
   float             m_texture_width{0};
+  WindowSize        m_window_size{INITIAL_WIDTH, INITIAL_HEIGHT};
   sf::Texture       m_upper_texture;
   sf::Texture       m_lower_texture;
-  sf::Sprite        m_upper_sprite;
   sf::Sprite        m_lower_sprite;
+  sf::Sprite        m_upper_sprite;
   sf::Image         m_image;
   const std::string m_file{"share/textures/pipe.png"};
 };
