@@ -8,10 +8,9 @@
 #ifndef COMPONENTS_BIRD_H
 #define COMPONENTS_BIRD_H
 
-#include <Program/Logger.h>
+#include "Program/Logger.h"
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
-#include <spdlog/spdlog.h>
 #include <memory>
 
 namespace sf
@@ -26,8 +25,8 @@ class EventsHandler;
 
 namespace Components
 {
-constexpr std::uint32_t GRAVITY     = 10;
-constexpr std::uint32_t FLAP_HEIGHT = GRAVITY + 1;
+class Background;
+
 constexpr std::uint32_t BIRD_START_X = 50;
 constexpr std::uint32_t BIRD_START_Y = 50;
 
@@ -50,27 +49,30 @@ public:
 
   void wing();
 
+  void die();
+
   void setEventHandler(Program::EventsHandler* event);
+
+  void setBackground(Components::Background* background);
 
   void setWindow(sf::RenderWindow* window);
 
 private:
-  float                        m_angle{};
-  bool                         m_is_flapping{};
-  float                        m_y_delta{};
-  size_t                       m_current_frame{};
-  std::uint32_t                m_delta{};
-  float                        m_x_position{BIRD_START_X};
-  float                        m_y_position{BIRD_START_Y};
-  float                        m_window_width{};
-  float                        m_window_height{};
-  float                        m_difficulty{1};
-  float                        m_mass{1};
-  float                        m_flap_strength{2};
-  sf::Sprite                   m_sprite;
-  Program::EventsHandler*      m_event{nullptr};
-  sf::RenderWindow*            m_window{nullptr};
-  std::vector<std::unique_ptr<sf::Texture>> m_textures;
+  using textures_collection_t = std::vector<std::unique_ptr<sf::Texture>>;
+
+  bool                    m_is_dead{};
+  int                     m_fall_start_height{};
+  size_t                  m_current_frame{};
+  long long int           m_delta{};
+  float                   m_window_width{};
+  float                   m_window_height{};
+  sf::Vector2f            m_acceleration{};
+  sf::Vector2f            m_velocity{};
+  sf::Sprite              m_sprite;
+  Program::EventsHandler* m_event{nullptr};
+  Components::Background* m_background{nullptr};
+  sf::RenderWindow*       m_window{nullptr};
+  textures_collection_t   m_textures;
 };
 
 }  // namespace Components
