@@ -22,10 +22,9 @@ constexpr auto WINDOW_TITLE = "Flappy Bird C++";
 
 int main(int argc, const char* argv[])
 {
-  Logger::Info(">>");
-  Logger::SpdLogger::get().setLevel(spdlog::level::level_enum::debug);
+  Logger::Info(">>main");
   auto args = Program::parseArguments(argc, argv);
-  Logger::Info(args.width);
+  Logger::SpdLogger::get().setLevel(args.level);
 
   sf::RenderWindow window(sf::VideoMode(args.width, args.height), WINDOW_TITLE);
   window.setFramerateLimit(args.frame_rate);
@@ -41,10 +40,12 @@ int main(int argc, const char* argv[])
   Components::Background background;
   Components::Bird bird;
   bird.setEventHandler(&game);
+  bird.setBackground(&background);
   bird.setWindow(&window);
   background.setWindowSize(window_size);
   background.setXSpeed(args.speed);
   long long int us = 0;
+//  const auto& sprite = bird.getSprite();
 
   while (window.isOpen())
   {
@@ -61,6 +62,24 @@ int main(int argc, const char* argv[])
     {
       background.move();
       bird.move(us);
+      const auto& bb = bird.getSprite().getGlobalBounds();
+      const auto& lpb1 = background.getPipes1().lock()->getLowSprite().getGlobalBounds();
+      const auto& usb1 = background.getPipes1().lock()->getUpSprite().getGlobalBounds();
+      const auto& lpb2 = background.getPipes2().lock()->getLowSprite().getGlobalBounds();
+      const auto& usb2 = background.getPipes2().lock()->getUpSprite().getGlobalBounds();
+      Logger::Info("bounds top, left, height, width: bird ({},{},{},{}):", bb.top, bb.left, bb.height, bb.width);
+      Logger::Info("bounds top, left, height, width: pipes ({},{},{},{})",
+                   lpb1.top,
+                   lpb1.left,
+                   lpb1.height,
+                   lpb1.width);
+
+      if (bb.intersects(lpb1) || bb.intersects(usb1) || bb.intersects(lpb2) || bb.intersects(usb2))
+      {
+        Logger::Info("intersects");
+        bird.die();
+        background.stop();
+      }
     }
     else
     {
@@ -72,7 +91,7 @@ int main(int argc, const char* argv[])
   }
 
   ImGui::SFML::Shutdown();
-  Logger::Info("<<");
+  Logger::Info("<<main");
 
   return 0;
 }
