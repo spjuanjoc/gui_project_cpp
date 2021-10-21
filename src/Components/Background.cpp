@@ -12,14 +12,15 @@ namespace Components
 
 Background::Background()
 {
+  Logger::Info("Configure background");
   loadTexturesFiles();
   setTextures();
   const auto&        sky_size    = static_cast<sf::Vector2<float>>(m_sky_texture.getSize());
   const auto&        ground_size = static_cast<sf::Vector2<float>>(m_ground_texture.getSize());
   const auto         floor_width = m_window_size.height - sky_size.y - ground_size.y;
   sf::Vector2<float> floor_size(m_window_size.width, floor_width);
-  m_pipes_1 = std::make_unique<PipePair>();
-  m_pipes_2 = std::make_unique<PipePair>();
+  m_pipes_1 = std::make_shared<PipePair>(); // todo move to stack
+  m_pipes_2 = std::make_shared<PipePair>();
   m_pipes_2->setXPosition(m_window_size.width);  //review this
   m_pipes_2->setColor(sf::Color::Green);
   m_ground_y = sky_size.y;
@@ -28,23 +29,6 @@ Background::Background()
   m_floor.setSize(floor_size);
   m_floor.setPosition(0, sky_size.y + ground_size.y);
   m_floor.setFillColor(m_floor_color);
-}
-
-void Background::draw(sf::RenderWindow& window)
-{
-  window.draw(m_sky_sprite);
-  window.draw(m_upper_sprite);
-  window.draw(m_lower_sprite);
-  m_pipes_1->draw(window);
-  m_pipes_2->draw(window);
-  window.draw(m_ground_sprite);
-  window.draw(m_floor);
-}
-
-void Background::move()
-{
-  m_pipes_1->move();
-  m_pipes_2->move();
 }
 
 void Background::setWindowSize(const sf::Vector2<std::uint32_t>& window_size)
@@ -74,16 +58,62 @@ void Background::setTextures()
   m_ground_sprite.setTexture(m_ground_texture);
 }
 
+void Background::draw(sf::RenderWindow& window)
+{
+  window.draw(m_sky_sprite);
+  window.draw(m_upper_sprite);
+  window.draw(m_lower_sprite);
+  m_pipes_1->draw(window);
+  m_pipes_2->draw(window);
+  m_ground_sprite.setPosition(m_ground_x, m_ground_y);
+  window.draw(m_ground_sprite);
+  window.draw(m_floor);
+}
+
+void Background::move()
+{
+  m_pipes_1->move();
+  m_pipes_2->move();
+  m_is_stopped = false;
+}
+
 void Background::moveGround()
 {
-  const auto width = static_cast<float>(m_ground_texture.getSize().x);
-  if (m_ground_x <= -(width * TEN_PERCENT))
+  if (!m_is_stopped)
   {
-    m_ground_x = 0;
-  }
+    const auto width = static_cast<float>(m_ground_texture.getSize().x);
+    if (m_ground_x <= -(width * TEN_PERCENT))
+    {
+      m_ground_x = 0;
+    }
 
-  m_ground_x -= m_x_speed;
-  m_ground_sprite.setPosition(m_ground_x, m_ground_y);
+    m_ground_x -= m_x_speed;
+  }
+}
+
+void Background::stop()
+{
+  m_is_stopped = true;
+}
+
+sf::Sprite& Background::getSky()
+{
+  return m_sky_sprite;
+}
+
+sf::Sprite& Background::getGround()
+{
+  return m_ground_sprite;
+}
+
+std::weak_ptr<PipePair> Background::getPipes1()
+{
+  return m_pipes_1;
+}
+
+std::weak_ptr<PipePair> Background::getPipes2()
+{
+  return m_pipes_2;
 }
 
 }  // namespace Components
