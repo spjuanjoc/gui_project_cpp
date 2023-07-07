@@ -44,3 +44,18 @@ Flappy Bird in C++ using ImGui-SFML.
 
 ---
 
+
+## TO DO
+
+github actions
+conan + android
+
+señales sigc++
+argparse
+
+flappy bird into the matrix
+log configurations
+   level
+   name
+update clang-format
+create TODO file

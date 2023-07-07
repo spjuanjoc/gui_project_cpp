@@ -63,7 +63,7 @@ private:
   bool                    m_is_dead{};
   int                     m_fall_start_height{};
   size_t                  m_current_frame{};
-  long long int           m_delta{};
+  long long int           m_delta_elapsed{};
   float                   m_window_width{};
   float                   m_window_height{};
   sf::Vector2f            m_acceleration{};

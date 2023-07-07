@@ -67,12 +67,12 @@ int main(int argc, const char* argv[])
       const auto& usb1 = background.getPipes1().lock()->getUpSprite().getGlobalBounds();
       const auto& lpb2 = background.getPipes2().lock()->getLowSprite().getGlobalBounds();
       const auto& usb2 = background.getPipes2().lock()->getUpSprite().getGlobalBounds();
-      Logger::Info("bounds top, left, height, width: bird ({},{},{},{}):", bb.top, bb.left, bb.height, bb.width);
-      Logger::Info("bounds top, left, height, width: pipes ({},{},{},{})",
-                   lpb1.top,
-                   lpb1.left,
-                   lpb1.height,
-                   lpb1.width);
+//      Logger::Info("bounds top, left, height, width: bird ({},{},{},{}):", bb.top, bb.left, bb.height, bb.width);
+//      Logger::Info("bounds top, left, height, width: pipes ({},{},{},{})",
+//                   lpb1.top,
+//                   lpb1.left,
+//                   lpb1.height,
+//                   lpb1.width);
 
       if (bb.intersects(lpb1) || bb.intersects(usb1) || bb.intersects(lpb2) || bb.intersects(usb2))
       {

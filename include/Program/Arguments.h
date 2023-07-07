@@ -15,7 +15,7 @@ namespace Program
 {
 constexpr auto          NAME           = "flappy_bird_cpp";
 constexpr auto          VERSION        = "0.0.3";
-constexpr auto          INITIAL_SPEED  = 4.0F;
+constexpr auto          INITIAL_SPEED  = 3.0F;
 constexpr std::uint32_t MAX_FRAME_RATE = 30;
 constexpr std::uint32_t WINDOW_HEIGHT  = 720;
 constexpr auto          WINDOW_SCALE   = 1.0F;
@@ -64,12 +64,13 @@ static Arguments parseArguments(int argc, const char* argv[])
 
   parser.parse_args(argc, argv);
 
-  arguments.width     = parser.get<std::uint32_t>("--width");
-  arguments.height    = parser.get<std::uint32_t>("--height");
+  arguments.width      = parser.get<std::uint32_t>("--width");
+  arguments.height     = parser.get<std::uint32_t>("--height");
   arguments.frame_rate = parser.get<std::uint32_t>("--frame_rate");
-  arguments.scale     = parser.get<float>("--scale");
-  arguments.speed     = parser.get<float>("--initial_speed");
-  arguments.level = parseLevel(parser.get<std::uint32_t>("--level"));
+  arguments.scale      = parser.get<float>("--scale");
+  arguments.speed      = parser.get<float>("--initial_speed");
+  arguments.level      = parseLevel(parser.get<std::uint32_t>("--level"));
+
   Logger::Debug("<<");
 
   return arguments;

@@ -12,15 +12,15 @@
 
 namespace Components
 {
-constexpr auto       FLAP_FREQUENCY    = 80000;
+constexpr auto       FLAP_FREQUENCY    = 80'000;
 constexpr float      FLAP_ANGLE        = -30.0F;
 constexpr float      FALL_ROTATION     = 6.0F;
-constexpr float      FLAP_MAX_VELOCITY = 20.0F;
-constexpr float      FALL_MAX_VELOCITY = -20.0F;
-constexpr int        FLAP_FALL_DELTA   = 10;
+constexpr float      FLAP_MAX_VELOCITY = 18.0F;
+constexpr float      FALL_MAX_VELOCITY = -15.0F;
+constexpr int        FLAP_FALL_DELTA   = 8;
 constexpr auto       DEAD_ANGLE        = -180;
-const sf::Vector2f   FLAP_ACCELERATION{-0.0F, -10.0F};
-const sf::Vector2f   FALL_ACCELERATION{0, 8.0F};
+const sf::Vector2f   FLAP_ACCELERATION{-0.0F, -8.0F};
+const sf::Vector2f   FALL_ACCELERATION{0, 6.0F};
 constexpr std::array textures{"share/textures/bird/1-mid.png",
                               "share/textures/bird/1-up.png",
                               "share/textures/bird/1-mid.png",
@@ -42,6 +42,7 @@ Bird::Bird()
 
   float half_x = static_cast<float>(m_textures[0]->getSize().x) / 2.0F;
   float half_y = static_cast<float>(m_textures[0]->getSize().y) / 2.0F;
+
   m_sprite.setOrigin(half_x, half_y);
 }
 
@@ -77,17 +78,17 @@ void Bird::fall()
 
 void Bird::wing()
 {
-  if (m_delta > FLAP_FREQUENCY)
+  if (m_delta_elapsed > FLAP_FREQUENCY)
   {
-    Logger::Info("Move wings");
-    m_delta         = 0;
+    Logger::Debug("Move wings");
+    m_delta_elapsed = 0;
     m_current_frame = (m_current_frame >= m_textures.size() - 1) ? 0 : m_current_frame + 1;
   }
 }
 
 void Bird::move(long long int elapsed_us)
 {
-  m_delta += elapsed_us;
+  m_delta_elapsed += elapsed_us;
   wing();
   flap();
 
@@ -110,7 +111,7 @@ void Bird::stand(long long int elapsed_us)
 
   if (!m_is_dead)
   {
-    m_delta += elapsed_us;
+    m_delta_elapsed += elapsed_us;
 
 //    if (m_current_frame == 0 || m_current_frame == 1)
 //    {
