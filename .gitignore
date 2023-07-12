@@ -63,7 +63,3 @@ arch.c
 # Cmake swap
 /.CMakeLists.txt.swp
 
-logs/
-original/
-res/
-*.zip

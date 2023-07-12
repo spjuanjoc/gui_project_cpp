@@ -1,7 +1,7 @@
 /**
 * @brief
 *
-* @author  juan.castellanos
+* @author  spjuanjoc
 * @date    2020-08-20
 */
 

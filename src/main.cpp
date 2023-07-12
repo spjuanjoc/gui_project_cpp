@@ -1,14 +1,14 @@
 /**
  * @brief
  *
- * @author  juan.castellanos
+ * @author  spjuanjoc
  * @date    2021-10-12
 
- * @see (https://github.com/AlexZihaoXu/CppFlappyBird.git)
+
 */
 
-#include "Components/Background.h"
-#include "Components/Bird.h"
+//#include "Components/Background.h"
+//#include "Components/Bird.h"
 #include "Program/Arguments.h"
 #include "Program/EventsHandler.h"
 #include "Program/Logger.h"
@@ -18,7 +18,7 @@
 #include <imgui-SFML.h>
 #include <imgui.h>
 
-constexpr auto WINDOW_TITLE = "Flappy Bird C++";
+constexpr auto WINDOW_TITLE = "ImGui+SFML in C++";
 
 int main(int argc, const char* argv[])
 {
@@ -30,61 +30,53 @@ int main(int argc, const char* argv[])
   window.setFramerateLimit(args.frame_rate);
 //  window.setPosition({args.startX, args.startY});
   sf::Clock deltaClock;
-  Program::EventsHandler game{};
+  Program::EventsHandler program{};
 
   ImGui::SFML::Init(window);
   ImGui::GetStyle().ScaleAllSizes(args.scale);
   ImGui::GetIO().FontGlobalScale = args.scale;
 
   const auto& window_size = window.getSize();
-  Components::Background background;
-  Components::Bird bird;
-  bird.setEventHandler(&game);
-  bird.setBackground(&background);
-  bird.setWindow(&window);
-  background.setWindowSize(window_size);
-  background.setXSpeed(args.speed);
-  long long int us = 0;
-//  const auto& sprite = bird.getSprite();
+  long long int elapsed_time = 0;
+
+
+  constexpr std::array             options{"Option1", "Option2", "Option3"};
+  std::array<bool, options.size()> states{};
+
 
   while (window.isOpen())
   {
-    game.poll(window);
-    us = deltaClock.getElapsedTime().asMicroseconds();
+    program.poll(window);
+    elapsed_time = deltaClock.getElapsedTime().asMicroseconds();
     ImGui::SFML::Update(window, deltaClock.restart());
 
     window.clear();
-    background.draw(window);
-    background.moveGround();
-    bird.draw(window);
 
-    if(game.isRunning())
-    {
-      background.move();
-      bird.move(us);
-      const auto& bb = bird.getSprite().getGlobalBounds();
-      const auto& lpb1 = background.getPipes1().lock()->getLowSprite().getGlobalBounds();
-      const auto& usb1 = background.getPipes1().lock()->getUpSprite().getGlobalBounds();
-      const auto& lpb2 = background.getPipes2().lock()->getLowSprite().getGlobalBounds();
-      const auto& usb2 = background.getPipes2().lock()->getUpSprite().getGlobalBounds();
-//      Logger::Info("bounds top, left, height, width: bird ({},{},{},{}):", bb.top, bb.left, bb.height, bb.width);
-//      Logger::Info("bounds top, left, height, width: pipes ({},{},{},{})",
-//                   lpb1.top,
-//                   lpb1.left,
-//                   lpb1.height,
-//                   lpb1.width);
+//    if(program.isRunning())
+//    {
 
-      if (bb.intersects(lpb1) || bb.intersects(usb1) || bb.intersects(lpb2) || bb.intersects(usb2))
+      // Box 1
+      ImGui::Begin("Options");
       {
-        Logger::Info("intersects");
-        bird.die();
-        background.stop();
+        std::size_t index = 0;
+        for (const auto& item : options)
+        {
+          ImGui::Checkbox(fmt::format("{} : {}", index + 1, item).c_str(), &states.at(index));
+          ++index;
+        }
       }
-    }
-    else
-    {
-      bird.stand(us);
-    }
+      ImGui::End();
+
+
+      // Box 2
+      ImGui::Begin("Key Pressed");
+      {
+        ImGui::TextUnformatted(fmt::format("Key pressed: {}", program.pressedKeyName()).c_str());
+        //      std::this_thread::sleep_for(50ms);
+      }
+      ImGui::End();
+//    }
+
 
     ImGui::SFML::Render(window);
     window.display();

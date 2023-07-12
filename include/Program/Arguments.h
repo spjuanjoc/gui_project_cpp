@@ -1,7 +1,7 @@
 /**
  * @brief
  *
- * @author  juan.castellanos
+ * @author  spjuanjoc
  * @date    2021-10-13
  */
 
@@ -10,11 +10,12 @@
 
 #pragma GCC system_header
   #include <argparse/argparse.hpp>
+#include "Logger.h"
 
 namespace Program
 {
-constexpr auto          NAME           = "flappy_bird_cpp";
-constexpr auto          VERSION        = "0.0.3";
+constexpr auto          NAME           = "gui_project_cpp";
+constexpr auto          VERSION        = "0.0.4";
 constexpr auto          INITIAL_SPEED  = 3.0F;
 constexpr std::uint32_t MAX_FRAME_RATE = 30;
 constexpr std::uint32_t WINDOW_HEIGHT  = 720;

@@ -1,14 +1,16 @@
 /**
  * @brief
  *
- * @author  juan.castellanos
+ * @author  spjuanjoc
  * @date    2021-10-12
  */
 
 #ifndef COMPONENTS_BACKGROUND_H
 #define COMPONENTS_BACKGROUND_H
 
-#include "Pipes.h"
+#include "Program/Logger.h"
+
+//#include "Pipes.h"
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
@@ -17,6 +19,18 @@
 
 namespace Components
 {
+constexpr auto       TEN_PERCENT   = 0.1F;
+constexpr auto       INITIAL_SPEED  = 5;
+constexpr auto       INITIAL_WIDTH  = 480;
+constexpr auto       INITIAL_HEIGHT = 720;
+
+
+struct WindowSize
+{
+  float width;
+  float height;
+};
+
 class Background
 {
 public:
@@ -35,8 +49,8 @@ public:
   sf::Sprite& getSky();
   sf::Sprite& getGround();
 
-  std::weak_ptr<PipePair> getPipes1();
-  std::weak_ptr<PipePair> getPipes2();
+//  std::weak_ptr<PipePair> getPipes1();
+//  std::weak_ptr<PipePair> getPipes2();
 
   void moveGround();
 
@@ -61,8 +75,8 @@ private:
   const sf::Color           m_floor_color{245, 228, 138};
   const std::string         m_day_file{"share/textures/background/day.png"};
   const std::string         m_ground_file{"share/textures/ground.png"};
-  std::shared_ptr<PipePair> m_pipes_1;
-  std::shared_ptr<PipePair> m_pipes_2;
+//  std::shared_ptr<PipePair> m_pipes_1;
+//  std::shared_ptr<PipePair> m_pipes_2;
 };
 
 }  // namespace Components

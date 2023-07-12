@@ -1,16 +1,19 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.15)
 
-project(flappy_bird_cpp
-  VERSION "0.0.3"
-  DESCRIPTION "Flappy Bird in C++ with ImGui+SFML"
+project(gui_project_cpp
+  VERSION "0.0.4"
+  DESCRIPTION "A GUI in C++ with ImGui+SFML"
   LANGUAGES CXX
 )
 
+# Options
+option(ENABLE_COVERAGE "Enable gcov coverage"              False)
+option(ENABLE_PCH      "Enable Precompiled Headers"        False)
+option(ENABLE_TESTS    "Enable tests"                      False)
+option(ENABLE_WERROR   "Treat compiler warnings as errors" False)
 
-option(ENABLE_PCH   "Enable Precompiled Headers"  False)
-option(ENABLE_TESTS "Enable tests"                False)
 
-
+# GLOB source files
 file(GLOB_RECURSE
   SOURCE_FILES
     src/*.cpp
@@ -24,10 +27,10 @@ add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
 ## Compiler options
 include(cmake/CompilerOptions.cmake)
-set_project_options(${PROJECT_NAME})
+set_compiler_options(${PROJECT_NAME})
 
 
-## Setup Conan
+## Setup Conan < 2.0
 if (NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
   message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
   file(DOWNLOAD
@@ -36,12 +39,15 @@ if (NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
       )
 endif ()
 
+
 include(${CMAKE_BINARY_DIR}/conan.cmake)
-#conan_add_remote(NAME conancenter URL https://center.conan.io)
-conan_check(REQUIRED)
 conan_cmake_autodetect(settings)
-#conan_cmake_install(PATH_OR_REFERENCE ${CMAKE_CURRENT_SOURCE_DIR}/conanfile.txt BUILD missing SETTINGS ${settings})
-conan_cmake_run(CONANFILE conanfile.txt BASIC_SETUP NO_OUTPUT_DIRS BUILD missing SETTINGS ${settings})
+conan_check(REQUIRED)
+conan_cmake_run(CONANFILE conanfile.txt
+  BASIC_SETUP NO_OUTPUT_DIRS
+  BUILD missing
+  SETTINGS ${settings}
+  )
 
 
 ## Find third-party packages
@@ -59,7 +65,6 @@ target_link_libraries(${PROJECT_NAME}
     ImGui-SFML::ImGui-SFML
     spdlog::spdlog
 )
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 target_include_directories(${PROJECT_NAME}
   PRIVATE
     include
@@ -82,7 +87,6 @@ endif ()
 
 ## Copy resources
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/share DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-#file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/res DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 
 ## Install commands
