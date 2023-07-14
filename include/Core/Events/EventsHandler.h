@@ -8,6 +8,7 @@
 #ifndef CORE_EVENTSHANDLER_H
 #define CORE_EVENTSHANDLER_H
 
+#include <cstdint>
 #include <map>
 
 namespace sf
