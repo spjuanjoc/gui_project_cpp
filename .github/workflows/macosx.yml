@@ -18,6 +18,7 @@ jobs:
           conan profile list
           conan profile new default --detect
           conan profile show default
+          conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
 
       - name: Create Build Environment
         run: |
