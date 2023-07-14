@@ -17,7 +17,7 @@ jobs:
 
       - name: Update apt
         run: |
-          apt-get update
+          sudo apt-get update
 
       - name: Upgrade pip
         run: |
