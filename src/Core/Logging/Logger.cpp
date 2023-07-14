@@ -5,7 +5,7 @@
 * @date    2021-03-25
 */
 
-#include "Program/Logger.h"
+#include "Core/Logging/Logger.h"
 
 namespace Logger
 {

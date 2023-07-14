@@ -1,12 +1,12 @@
 /**
-* @brief
+* @brief Defines the global logger objects.
 *
 * @author  spjuanjoc
 * @date    2021-03-25
 */
 
-#ifndef PROGRAM_LOGGER_H
-#define PROGRAM_LOGGER_H
+#ifndef CORE_LOGGER_H
+#define CORE_LOGGER_H
 
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/rotating_file_sink.h>
@@ -21,12 +21,19 @@ constexpr auto MAX_FILES       = 5;
 constexpr auto CONSOLE_LEVEL   = spdlog::level::level_enum::info;
 constexpr auto FILE_LEVEL      = spdlog::level::level_enum::trace;
 
+/**
+ * Logger class that wraps the spdlog objects for a multisink singleton logger.
+ */
 class SpdLogger
 {
 protected:
   SpdLogger();
 
 public:
+  /**
+   *
+   * @return The logger reference.
+   */
   static SpdLogger& get()
   {
     static SpdLogger logger;
@@ -35,11 +42,19 @@ public:
 
   virtual ~SpdLogger();
 
+  /**
+   * The deleted special members. Non-copy non-movable.
+   */
   SpdLogger(const SpdLogger&) = delete;
   SpdLogger(SpdLogger&&)      = delete;
   SpdLogger& operator=(const SpdLogger&) = delete;
   SpdLogger& operator=(SpdLogger&&) = delete;
 
+  /**
+   * Defines the log level.
+   *
+   * @param level The enum value of level.
+   */
   void setLevel(spdlog::level::level_enum level);
 
 private:
@@ -101,4 +116,4 @@ void Critical(const FormatString& fmt, Args&&... args)
 
 }  // namespace Logger
 
-#endif /* PROGRAM_LOGGER_H */
+#endif /* CORE_LOGGER_H */

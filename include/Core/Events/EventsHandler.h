@@ -1,12 +1,12 @@
 /**
-* @brief
+* @brief Declares the valid keyboard events.
 *
 * @author  spjuanjoc
-* @date    2020-08-20
+* @date    2021-11-26
 */
 
-#ifndef PROGRAM_EVENTSHANDLER_H
-#define PROGRAM_EVENTSHANDLER_H
+#ifndef CORE_EVENTSHANDLER_H
+#define CORE_EVENTSHANDLER_H
 
 #include <map>
 
@@ -16,11 +16,17 @@ class Event;
 class RenderWindow;
 }  // namespace sf
 
-namespace Program
+namespace Core
 {
+/**
+ * @enum Core::KEY_NAMES
+ *
+ * \ingroup Core
+ * @brief The names of the keyboard keys.
+ */
 enum class KEY_NAMES : std::int32_t
 {
-  UNKNOWN   = -1,  ///< Unhandled key
+  UNKNOWN   = -1,  /**< Unhandled key */
   A         = 0,   ///< The A key
   B         = 1,   ///< The B key
   C         = 2,   ///< The C key
@@ -124,6 +130,9 @@ enum class KEY_NAMES : std::int32_t
   Pause     = 100  ///< The Pause key
 };
 
+/**
+ * Maps the keyboard enum values to strings for displaying.
+ */
 const std::map<KEY_NAMES, std::string_view> KEY_STRINGS{
   {KEY_NAMES::UNKNOWN, " "},            ///< Unhandled key
   {KEY_NAMES::A, "A"},                  ///< The A key
@@ -174,7 +183,7 @@ const std::map<KEY_NAMES, std::string_view> KEY_STRINGS{
   {KEY_NAMES::Menu, "Menu"},            ///< The Menu key
   {KEY_NAMES::LBracket, "LBracket"},    ///< The [ key
   {KEY_NAMES::RBracket, "RBracket"},    ///< The ] key
-  {KEY_NAMES::Enhe, "Ñ"},               ///< The ; key (Ñ is ES)
+  {KEY_NAMES::Enhe, "Ñ"},               ///< The ; key (Ñ in ES)
   {KEY_NAMES::Comma, "Comma"},          ///< The , key
   {KEY_NAMES::Period, "Period"},        ///< The . key
   {KEY_NAMES::Quote, "Quote"},          ///< The ' key
@@ -229,44 +238,83 @@ const std::map<KEY_NAMES, std::string_view> KEY_STRINGS{
   {KEY_NAMES::Pause, "Pause"},          ///< The Pause key
 };
 
+/**
+ * Defines the allowed events to process.
+ */
 class EventsHandler
 {
 public:
+
+  /**
+   * Checks the event type
+   *
+   * @param window
+   */
   void poll(sf::RenderWindow& window);
 
+  /**
+   * Closes the main window to leave the main loop.
+   *
+   * @param window
+   */
+  void close(sf::RenderWindow& window);
+
+  /**
+   * Starts/Stops the inner processing.
+   */
+  void pauseResume();
+
+  /**
+   * Whether the inner processing is running.
+   *
+   * @return true if running, false otherwise.
+   */
   [[nodiscard]]
   bool isRunning() const
   {
     return m_isRunning;
   }
 
+  /**
+   * Stops the inner processing without leaving the main loop.
+   */
   void pause()
   {
     m_isRunning = false;
   }
 
+  /**
+   * Gets the enum value of the pressed key.
+   *
+   * @return The key value.
+   */
   [[nodiscard]]
   KEY_NAMES pressedKey() const
   {
     return static_cast<KEY_NAMES>(m_key);
   }
 
+  /**
+   * Gets the name of the pressed key.
+   *
+   * @return The string_view key name.
+   */
   [[nodiscard]]
   std::string_view pressedKeyName() const
   {
-    return Program::KEY_STRINGS.at(m_key);
+    return Core::KEY_STRINGS.at(m_key);
   }
 
 private:
   KEY_NAMES m_key{-1};
-  bool isAlt{};      ///< Is the Alt key pressed?
-  bool isControl{};  ///< Is the Control key pressed?
-  bool isShift{};    ///< Is the Shift key pressed?
-  bool isSystem{};   ///< Is the System key pressed?
-  bool isClick{};
-  bool m_isRunning{false};
+  bool      isAlt{};
+  bool      isControl{};
+  bool      isShift{};
+  bool      isSystem{};
+  bool      isClick{};
+  bool      m_isRunning{false};
 };
 
-}  // namespace Program
+}  // namespace Core
 
-#endif /* PROGRAM_EVENTSHANDLER_H */
+#endif /* CORE_EVENTSHANDLER_H */

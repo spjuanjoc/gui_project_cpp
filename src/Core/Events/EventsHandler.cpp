@@ -1,17 +1,21 @@
 /**
-* @brief
+* @brief Handles the multimedia events for the keyboard and mouse.
 *
 * @author  spjuanjoc
-* @date    2020-08-20
+* @date    2021-11-26
 */
 
-#include "Program/EventsHandler.h"
-#include "Program/Logger.h"
+#include "Core/Events/EventsHandler.h"
+#include "Core/Logging/Logger.h"
+
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
 #include <imgui-SFML.h>
 
-void Program::EventsHandler::poll(sf::RenderWindow& window)
+namespace Core
+{
+
+void EventsHandler::poll(sf::RenderWindow& window)
 {
   sf::Event event{};
   while (window.pollEvent(event))
@@ -28,12 +32,8 @@ void Program::EventsHandler::poll(sf::RenderWindow& window)
         isShift   = event.key.shift;
         isSystem  = event.key.system;
 
-        if (isShift && m_key == KEY_NAMES::W)
-        {
-          Logger::Info("Shift + W");
-          Logger::Info("Close");
-          window.close();
-        }
+        pauseResume();
+        close(window);
 
         break;
       }
@@ -45,17 +45,6 @@ void Program::EventsHandler::poll(sf::RenderWindow& window)
       case sf::Event::MouseButtonPressed:
       {
         isClick = true;
-
-        if (m_isRunning)
-        {
-          m_isRunning = false;
-          Logger::Info("Pause");
-        }
-        else
-        {
-          m_isRunning = true;
-          Logger::Info("Start");
-        }
         break;
       }
       case sf::Event::Closed:
@@ -69,3 +58,31 @@ void Program::EventsHandler::poll(sf::RenderWindow& window)
     }
   }  // End of poll event
 }
+
+void EventsHandler::pauseResume()
+{
+  if (KEY_NAMES::Enter == pressedKey())
+  {
+    if (m_isRunning)
+    {
+      m_isRunning = false;
+      Logger::Info("Pause");
+    }
+    else
+    {
+      m_isRunning = true;
+      Logger::Info("Start");
+    }
+  }
+}
+
+void EventsHandler::close(sf::RenderWindow& window)
+{
+  if ((isShift || isControl) && (m_key == KEY_NAMES::W || m_key == KEY_NAMES::Q))
+  {
+    Logger::Info("Close");
+    window.close();
+  }
+}
+
+}  // namespace Core
