@@ -1,12 +1,10 @@
- [requires]
-   imgui-sfml/2.2@bincrafters/stable
-   spdlog/1.9.2
-   argparse/2.2
+[requires]
+  imgui-sfml/2.2@bincrafters/stable
+  spdlog/1.9.2
+  argparse/2.2
 
- [build_requires]
-   opengl/system
-   xorg/system
+[build_requires]
+  opengl/system
 
- [generators]
-   cmake_find_package
-
+[generators]
+  cmake_find_package
