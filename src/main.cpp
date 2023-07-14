@@ -1,83 +1,72 @@
-#include "Events/Events.h"
-#include <SFML/Graphics/CircleShape.hpp>
+/**
+ * @brief Defines the entry point which starts rendering the window, and polling the
+ *        multimedia events.
+ *
+ * @author  spjuanjoc
+ * @date    2021-10-12
+*/
+
+#include "Core/Events/EventsHandler.h"
+#include "Core/Initialization/Arguments.h"
+#include "Core/Initialization/Constants.h"
+#include "Core/Logging/Logger.h"
+
+#include <imgui.h>
+
+#include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
-#include <SFML/Window/Event.hpp>
-#include <docopt/docopt.h>
 #include <imgui-SFML.h>
-#include <imgui.h>
-#include <fmt/format.h>
-#include <spdlog/spdlog.h>
-#include <chrono>
-#include <string_view>
-#include <list>
-//#include <thread>
 
-using namespace std::chrono_literals;
-
-constexpr std::string_view TITLE{"some title"};
-
-constexpr std::string_view USAGE =
-  R"(Gui Project.
-
-    Usage:
-      gui_project_cpp [options]
-
-    Options:
-      -h --help     Show this screen.
-      --version     Show version.
-      --width=<width>     Set screen width  [default: 720].
-      --height=<height>   Set screen height [default: 480].
-      --scale=<scale>     Set scale factor [default: 2].
-      --frameRate=<fr>    Set frame rate [default: 60].
-)";
-
-int main(int argc, const char* argv[])
+void
+loadFonts()
 {
-  std::map<std::string, docopt::value> args{docopt::docopt(std::string(USAGE),
-                                                           {std::next(argv), std::next(argv, argc)},
-                                                           true,                        // show help if requested
-                                                           "gui_project_cpp 0.0.1")};  // version string
-
-  for (auto const& arg : args)
+  try
   {
-    if (arg.second.isBool())
-    {
-      spdlog::info("{} = {}", arg.first, arg.second.asBool());
-    }
-    else if (arg.second.isString())
-    {
-      spdlog::info("{} = {}", arg.first, arg.second.asString());
-    }
+    ImGuiIO& gui_io = ImGui::GetIO();
+    gui_io.Fonts->Clear();
+    //check if file exists
+    gui_io.Fonts->AddFontFromFileTTF(FONT_FILENAME, FONT_SIZE);
   }
-
-  const auto width     = args["--width"].asLong();      // 720; //
-  const auto height    = args["--height"].asLong();     // 480; //
-  const auto frameRate = args["--frameRate"].asLong();  // 60; //
-  const auto scale     = args["--scale"].asLong();      // 2; //
-
-  spdlog::set_pattern("[%d-%m-%Y %T.%e %z] [%l]: %v");
-  spdlog::info(">>");
-
-  sf::RenderWindow window(sf::VideoMode(width, height), std::string(TITLE));
-  window.setFramerateLimit(frameRate);
-
-  ImGui::SFML::Init(window);
-  ImGui::GetStyle().ScaleAllSizes(scale);
-  ImGui::GetIO().FontGlobalScale = scale;
-
-  constexpr std::array             options{"Option1", "Option2", "Option3"};
-  std::array<bool, options.size()> states{};
-
-  sf::Clock deltaClock;
-  Events::Handler eventsHandler;
-
-  while (window.isOpen())
+  catch (const std::exception& exception)
   {
-    eventsHandler.Process(window);
+    Logger::Error("The fonts could not be loaded. {0}", exception.what());
+  }
+  catch (...)
+  {
+    Logger::Error("The fonts could not be loaded.");
+  }
+}
 
-    // Frame logic start
-    ImGui::SFML::Update(window, deltaClock.restart());
+int
+main(int argc, const char* argv[])
+{
+  Logger::Info(">>main");
+  auto args = Core::parseArguments(argc, argv);
+  Logger::SpdLogger::get().setLevel(args.level);
+
+  sf::RenderWindow main_window(sf::VideoMode(args.width, args.height), WINDOW_TITLE);
+  main_window.setFramerateLimit(args.frame_rate);
+  sf::Clock deltaClock;
+
+  ImGui::SFML::Init(main_window);
+  ImGui::GetStyle().ScaleAllSizes(args.scale);
+  loadFonts();
+  ImGui::SFML::UpdateFontTexture();
+  Core::EventsHandler program {};
+
+  ImGui::GetStyle().ScaleAllSizes(args.scale);
+  ImGui::GetIO().FontGlobalScale = args.scale;
+
+  constexpr std::array             options { "Option1", "Option2", "Option3" };
+  std::array<bool, options.size()> states {};
+
+  while (main_window.isOpen())
+  {
+    program.poll(main_window);
+    ImGui::SFML::Update(main_window, deltaClock.restart());
+
+    main_window.clear();
 
     // Box 1
     ImGui::Begin("Options");
@@ -91,22 +80,23 @@ int main(int argc, const char* argv[])
     }
     ImGui::End();
 
+
     // Box 2
     ImGui::Begin("Key Pressed");
     {
-      ImGui::TextUnformatted(fmt::format("Key pressed: {}", Events::keyName.at(eventsHandler.key)).c_str());
-//      std::this_thread::sleep_for(50ms);
+      ImGui::TextUnformatted(fmt::format("Key pressed: {}", program.pressedKeyName()).c_str());
+      //      std::this_thread::sleep_for(50ms);
     }
     ImGui::End();
+    //    }
 
-    window.clear();
-    ImGui::SFML::Render(window);
-    window.display();
-    // Frame logic end
+
+    ImGui::SFML::Render(main_window);
+    main_window.display();
   }
 
   ImGui::SFML::Shutdown();
+  Logger::Info("<<main");
 
-  spdlog::info("<<");
   return 0;
 }
