@@ -22,6 +22,7 @@ jobs:
           call refreshenv
           conan profile new default --detect
           conan profile show default
+          conan config set general.revisions_enabled=1
           conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
           echo "%PATH%" >> %GITHUB_PATH%
           echo "PATH = %PATH%"
