@@ -8,3 +8,6 @@
 
 [generators]
   cmake_find_package
+
+[conf]
+  tools.system.package_manager:mode=install
