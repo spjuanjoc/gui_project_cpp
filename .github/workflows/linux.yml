@@ -1,0 +1,47 @@
+name: linux
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        cxx: [g++-10]
+        build_type: [Debug]
+        std: [17]
+        os: [ubuntu-20.04]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Upgrade pip
+        run: |
+          pip3 install --upgrade pip
+
+      - name: Install and configure Conan
+        run: |
+          pip3 install conan==1.60.1
+          conan profile new default --detect
+          conan profile update settings.compiler.libcxx=libstdc++11 default
+
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{runner.workspace}}/build
+
+      - name: CMake Configure
+        working-directory: ${{runner.workspace}}/build
+        env:
+          CXX: ${{matrix.cxx}}
+#          CXXFLAGS: ${{matrix.cxxflags}}
+        run: |
+          cmake -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
+                -DCMAKE_MODULE_PATH=$PWD -DENABLE_TESTS=False \
+                $GITHUB_WORKSPACE
+
+      - name: CMake Build
+        working-directory: ${{runner.workspace}}/build
+        run: cmake --build . --config ${{matrix.build_type}}
+
+#      - name: Test
+#        working-directory: ${{runner.workspace}}/build/
+#        run: ctest -V -C ${{matrix.build_type}} --output-on-failure

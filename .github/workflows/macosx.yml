@@ -1,0 +1,45 @@
+name: macos
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: macos-10.15
+    strategy:
+      matrix:
+        build_type: [Debug]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install and configure Conan
+        run: |
+          brew install conan@1.60.1
+          conan profile list
+          conan profile new default --detect
+          conan profile show default
+
+      - name: Create Build Environment
+        run: |
+          cmake -E make_directory ${{runner.workspace}}/build
+
+      - name: Install third-party packages
+        shell: bash
+        working-directory: ${{runner.workspace}}/build
+        run: conan install $GITHUB_WORKSPACE/conanfile.txt -s build_type=${{matrix.build_type}} --build missing
+
+      - name: CMake Configure
+        working-directory: ${{runner.workspace}}/build
+        run: |
+          cmake -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
+                -DCMAKE_MODULE_PATH=$PWD -DENABLE_TESTS=True \
+                -DENABLE_COVERAGE=False -DCMAKE_MACOSX_RPATH=False \
+                $GITHUB_WORKSPACE
+
+      - name: CMake Build
+        working-directory: ${{runner.workspace}}/build
+        run: cmake --build . --config ${{matrix.build_type}}
+
+      - name: Test
+        working-directory: ${{runner.workspace}}/build
+        run: ctest -V -C ${{matrix.build_type}} --output-on-failure
