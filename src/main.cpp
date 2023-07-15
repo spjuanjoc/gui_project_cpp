@@ -30,7 +30,7 @@ loadFonts()
   }
   catch (const std::exception& exception)
   {
-    Logger::Error("The fonts could not be loaded. {0}", exception.what());
+//    Logger::Error("The fonts could not be loaded. {0}", exception.what());
   }
   catch (...)
   {
@@ -41,7 +41,7 @@ loadFonts()
 int
 main(int argc, const char* argv[])
 {
-  Logger::Info(">>main");
+  Logger::Info(">>main {}", 1);
   auto args = Core::parseArguments(argc, argv);
   Logger::SpdLogger::get().setLevel(args.level);
 
