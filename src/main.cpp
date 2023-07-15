@@ -41,7 +41,7 @@ loadFonts()
 int
 main(int argc, const char* argv[])
 {
-  Logger::Info(">>main {}", 1);
+  Logger::Info(">>main");
   auto args = Core::parseArguments(argc, argv);
   Logger::SpdLogger::get().setLevel(args.level);
 
