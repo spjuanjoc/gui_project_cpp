@@ -42,6 +42,7 @@ int
 main(int argc, const char* argv[])
 {
   Logger::Info(">>main");
+  Logger::Error("test {} {}", "error", "string");
   auto args = Core::parseArguments(argc, argv);
   Logger::SpdLogger::get().setLevel(args.level);
 

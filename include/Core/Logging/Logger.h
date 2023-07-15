@@ -101,10 +101,10 @@ void Warn(const FormatString& fmt, Args&&... args)
 }
 
 template<typename FormatString, typename... Args>
-void Error(FormatString&& format_string, Args&&... args)
+void Error(const FormatString& fmt, Args&&... args)
 {
   SpdLogger::get();
-  spdlog::get(LOGGER_NAME)->error(std::forward<FormatString>(format_string), std::forward<Args>(args)...);
+  spdlog::get(LOGGER_NAME)->error(fmt::runtime(fmt), std::forward<Args>(args)...);
 }
 
 template<typename FormatString, typename... Args>
