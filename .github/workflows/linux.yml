@@ -9,7 +9,7 @@ jobs:
       matrix:
         cxx: [g++-10]
         build_type: [Debug]
-        std: [20]
+        std: [17]
         os: [ubuntu-20.04]
 
     steps:
