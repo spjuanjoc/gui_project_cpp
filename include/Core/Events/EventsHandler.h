@@ -10,6 +10,7 @@
 
 #include <cstdint>
 #include <map>
+#include <string_view>
 
 namespace sf
 {
