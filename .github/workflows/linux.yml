@@ -21,10 +21,7 @@ jobs:
 
       - name: Install apt packages
         run: |
-          sudo apt-get install libudev-dev libgl1-mesa-dev libgl1-mesa-glx mesa-utils xorg-dev libxcb-xkb-dev \ 
-                    libxcb-render-util0-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev \ 
-                    libxcb-xinerama0-dev libx11-xcb-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev \
-                    libxcb-xfixes0-dev libxcb-dri3-dev libxcb-cursor-dev libxcb-util-dev
+          sudo apt-get install libudev-dev 
 
       - name: Update apt 2
         run: |
