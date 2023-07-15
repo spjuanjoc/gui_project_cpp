@@ -21,7 +21,7 @@ jobs:
 
       - name: Install apt packages
         run: |
-          sudo apt-get install libudev-dev 
+          sudo apt-get install libudev-dev libgl-dev
 
       - name: Update apt 2
         run: |
