@@ -2,16 +2,17 @@
 
 GUI project in C++ using ImGui-SFML.
 
-|          |                                                                                                                                     Status |
-|----------|-------------------------------------------------------------------------------------------------------------------------------------------:|
-| Travis   |        [![Build Status](https://travis-ci.org/spjuanjoc/gui_project_cpp.svg?branch=main)](https://travis-ci.org/spjuanjoc/gui_project_cpp) |
-| Coverage | [![codecov](https://codecov.io/gh/spjuanjoc/gui_project_cpp/branch/main/graph/badge.svg)](https://codecov.io/gh/spjuanjoc/gui_project_cpp) |
+| Pipeline |                                                                                                                                                                               Status |
+|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| Actions  | [![linux](https://github.com/spjuanjoc/gui_project_cpp/actions/workflows/linux.yml/badge.svg?branch=main)](https://github.com/spjuanjoc/gui_project_cpp/actions/workflows/linux.yml) |
 
+[//]: # (| Coverage | [![codecov]&#40;https://codecov.io/gh/spjuanjoc/gui_project_cpp/branch/main/graph/badge.svg&#41;]&#40;https://codecov.io/gh/spjuanjoc/gui_project_cpp&#41; |)
 
 ## Install dependencies with Conan
 
-This configuration is required for conan version lower than 2.0, since that
-version still lacks the migration of some libraries related to ImGui and SFML.
+This configuration is required for conan version lower than 2.0.
+That version still lacks the migration of some libraries related to ImGui and
+SFML.
 
 1. Set up the `bincrafters` repository for the ImGui+SFML package
 
@@ -20,13 +21,15 @@ version still lacks the migration of some libraries related to ImGui and SFML.
     conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
     ```
 
+
 ## Requirements
 
-| Compiler       |
-|:---------------|
-| GCC >= 8.3.0   |
-| Clang >= 7.0.0 |
-| MSVC >= 14.16  |
+| Tool  | Version  |
+|:------|----------|
+| GCC   | >= 8.3.0 |
+| Clang | >= 7.0.0 |
+| MSVC  | >= 14.16 |
+| Conan | 1.61.0   |
 
 
 ## Install dependencies for Linux
