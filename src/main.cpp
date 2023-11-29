@@ -18,6 +18,8 @@
 #include <SFML/System/Clock.hpp>
 #include <imgui-SFML.h>
 
+#include <filesystem>
+
 void
 loadFonts()
 {
@@ -25,8 +27,11 @@ loadFonts()
   {
     ImGuiIO& gui_io = ImGui::GetIO();
     gui_io.Fonts->Clear();
-    //check if file exists
-    gui_io.Fonts->AddFontFromFileTTF(FONT_FILENAME, FONT_SIZE);
+
+    if (std::filesystem::exists(FONT_FILENAME))
+      gui_io.Fonts->AddFontFromFileTTF(FONT_FILENAME, FONT_SIZE);
+    else
+      Logger::Error("The fonts file {0} does not exist. Using the default font.", FONT_FILENAME);
   }
   catch (const std::exception& exception)
   {
