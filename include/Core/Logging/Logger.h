@@ -76,28 +76,28 @@ template<typename FormatString, typename... Args>
 void Trace(const FormatString& fmt, Args&&... args)
 {
   SpdLogger::get();
-  spdlog::get(LOGGER_NAME)->trace(fmt, std::forward<Args>(args)...);
+  spdlog::get(LOGGER_NAME)->trace(fmt::runtime(fmt), std::forward<Args>(args)...);
 }
 
 template<typename FormatString, typename... Args>
 void Debug(const FormatString& fmt, Args&&... args)
 {
   SpdLogger::get();
-  spdlog::get(LOGGER_NAME)->debug(fmt, std::forward<Args>(args)...);
+  spdlog::get(LOGGER_NAME)->debug(fmt::runtime(fmt), std::forward<Args>(args)...);
 }
 
 template<typename FormatString, typename... Args>
 void Info(const FormatString& fmt, Args&&... args)
 {
   SpdLogger::get();
-  spdlog::get(LOGGER_NAME)->info(fmt, std::forward<Args>(args)...);
+  spdlog::get(LOGGER_NAME)->info(fmt::runtime(fmt), std::forward<Args>(args)...);
 }
 
 template<typename FormatString, typename... Args>
 void Warn(const FormatString& fmt, Args&&... args)
 {
   SpdLogger::get();
-  spdlog::get(LOGGER_NAME)->warn(fmt, std::forward<Args>(args)...);
+  spdlog::get(LOGGER_NAME)->warn(fmt::runtime(fmt), std::forward<Args>(args)...);
 }
 
 template<typename FormatString, typename... Args>
@@ -111,7 +111,7 @@ template<typename FormatString, typename... Args>
 void Critical(const FormatString& fmt, Args&&... args)
 {
   SpdLogger::get();
-  spdlog::get(LOGGER_NAME)->critical(fmt, std::forward<Args>(args)...);
+  spdlog::get(LOGGER_NAME)->critical(fmt::runtime(fmt), std::forward<Args>(args)...);
 }
 
 }  // namespace Logger
