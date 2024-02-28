@@ -77,6 +77,11 @@ SFML.
     ./build/gui_project_cpp
     ```
 
+The expected output is the following main window
+
+![The window shown when run with no modifications](./docs/images/main-window.png "main-window")
+
+
 ## spdlog and fmt::format
 
 See about [spdlog](https://github.com/gabime/spdlog/wiki/3.-Custom-formatting)
