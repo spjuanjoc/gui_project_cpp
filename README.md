@@ -39,7 +39,10 @@ SFML.
     ```shell 
     conan profile update conf.tools.system.package_manager:mode=install default
     
-    sudo apt install -y libgl1-mesa-dev \
+    sudo apt install -y \
+      libudev-dev                       \
+      pkg-config                        \
+      libgl1-mesa-dev                   \
       xorg-dev                          \
       libxcb-render-util0-dev           \
       libxcb-xkb-dev                    \
@@ -73,6 +76,11 @@ SFML.
     ```shell
     ./build/gui_project_cpp
     ```
+
+The expected output is the following main window
+
+![The window shown when run with no modifications](./docs/images/main-window.png "main-window")
+
 
 ## spdlog and fmt::format
 
