@@ -39,7 +39,10 @@ SFML.
     ```shell 
     conan profile update conf.tools.system.package_manager:mode=install default
     
-    sudo apt install -y libgl1-mesa-dev \
+    sudo apt install -y \
+      libudev-dev                       \
+      pkg-config                        \
+      libgl1-mesa-dev                   \
       xorg-dev                          \
       libxcb-render-util0-dev           \
       libxcb-xkb-dev                    \
