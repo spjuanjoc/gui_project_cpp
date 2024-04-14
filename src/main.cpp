@@ -10,15 +10,16 @@
 #include "Core/Initialization/Arguments.h"
 #include "Core/Initialization/Constants.h"
 #include "Core/Logging/Logger.h"
+#include "Game/Components/Background.h"
+#include "Game/Components/StartWindow.h"
 
+#include <filesystem>
 #include <imgui.h>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
 #include <imgui-SFML.h>
-
-#include <filesystem>
 
 void
 loadFonts()
@@ -29,9 +30,13 @@ loadFonts()
     gui_io.Fonts->Clear();
 
     if (std::filesystem::exists(FONT_FILENAME))
+    {
       gui_io.Fonts->AddFontFromFileTTF(FONT_FILENAME, FONT_SIZE);
+    }
     else
+    {
       Logger::Error("The fonts file {0} does not exist. Using the default font.", FONT_FILENAME);
+    }
   }
   catch (const std::exception& exception)
   {
@@ -66,6 +71,9 @@ main(int argc, const char* argv[])
   constexpr std::array             options { "Option1", "Option2", "Option3" };
   std::array<bool, options.size()> states {};
 
+  Components::Background  background;
+  Components::StartWindow start_window;
+
   while (main_window.isOpen())
   {
     program.poll(main_window);
@@ -73,28 +81,38 @@ main(int argc, const char* argv[])
 
     main_window.clear();
 
-    // Box 1
-    ImGui::Begin("Options");
+    background.draw(main_window);
+
+    if (program.isRunning())
     {
-      std::size_t index = 0;
-      for (const auto& item : options)
+      // Box 1
+      ImGui::Begin("Options");
       {
-        ImGui::Checkbox(fmt::format("{} : {}", index + 1, item).c_str(), &states.at(index));
-        ++index;
+        std::size_t index = 0;
+        for (const auto& item : options)
+        {
+          ImGui::Checkbox(fmt::format("{} : {}", index + 1, item).c_str(), &states.at(index));
+          ++index;
+        }
       }
-    }
-    ImGui::End();
+      ImGui::End();
 
-
-    // Box 2
-    ImGui::Begin("Key Pressed");
-    {
-      ImGui::TextUnformatted(fmt::format("Key pressed: {}", program.pressedKeyName()).c_str());
-      //      std::this_thread::sleep_for(50ms);
+      // Box 2
+      ImGui::Begin("Key Pressed");
+      {
+        ImGui::TextUnformatted(fmt::format("Key pressed: {}", program.pressedKeyName()).c_str());
+      }
+      ImGui::End();
     }
-    ImGui::End();
+    //    else if (hasEnded())
+    //    {
+    //      showGameOverWindow(start_window_size);
     //    }
-
+    else
+    {
+      ImGui::ShowMetricsWindow();
+      start_window.draw(main_window);
+    }
 
     ImGui::SFML::Render(main_window);
     main_window.display();
