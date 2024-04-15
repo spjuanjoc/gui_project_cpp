@@ -59,7 +59,6 @@ runMainLoop(sf::RenderWindow& main_window)
   Core::EventsHandler           program {};
   Game::Components::Background  background;
   Game::Components::StartWindow start_window;
-  Game::Components::Ball        ball;
   long long int                 elapsed = 0;
 
   while (main_window.isOpen())
@@ -75,7 +74,6 @@ runMainLoop(sf::RenderWindow& main_window)
     {
       showKeysBox(program);
       onMouseEvents(program, deltaClock, elapsed);
-      ball.draw(main_window);
     }
     else
     {
