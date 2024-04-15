@@ -13,7 +13,7 @@
 namespace Core
 {
 constexpr auto          NAME           = "gui_project_cpp";
-constexpr auto          VERSION        = "0.0.4";
+constexpr auto          VERSION        = "0.0.5";
 constexpr std::uint32_t MAX_FRAME_RATE = 30;
 constexpr std::uint32_t WINDOW_HEIGHT  = 480;
 constexpr std::uint32_t WINDOW_WIDTH   = 640;

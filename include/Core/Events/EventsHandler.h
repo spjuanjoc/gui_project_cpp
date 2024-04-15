@@ -12,6 +12,7 @@
 #include <map>
 #include <string_view>
 
+// Forward declarations
 namespace sf
 {
 class Event;
@@ -77,7 +78,7 @@ enum class KEY_NAMES : std::int32_t
   Menu      = 45,  ///< The Menu key
   LBracket  = 46,  ///< The [ key
   RBracket  = 47,  ///< The ] key
-  Enhe      = 48,  ///< The ; key (Ñ is ES)
+  Enhe      = 48,  ///< The ; key (Ñ in ES)
   Comma     = 49,  ///< The , key
   Period    = 50,  ///< The . key
   Quote     = 51,  ///< The ' key
@@ -248,16 +249,16 @@ class EventsHandler
 public:
 
   /**
-   * Checks the event type
+   * Checks the event type.
    *
-   * @param window
+   * @param window The window to poll.
    */
   void poll(sf::RenderWindow& window);
 
   /**
    * Closes the main window to leave the main loop.
    *
-   * @param window
+   * @param window The window to close.
    */
   void close(sf::RenderWindow& window);
 
@@ -307,13 +308,15 @@ public:
     return Core::KEY_STRINGS.at(m_key);
   }
 
+  [[nodiscard]] bool isClickPressed() const;
+
 private:
   KEY_NAMES m_key{-1};
   bool      isAlt{};
   bool      isControl{};
   bool      isShift{};
   bool      isSystem{};
-  bool      isClick{};
+  bool      isClicked {};
   bool      m_isRunning{false};
 };
 

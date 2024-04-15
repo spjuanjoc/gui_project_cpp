@@ -6,10 +6,11 @@
  */
 
 #include "Game/Components/StartWindow.h"
+#include "Game/Components/Constants.h"
 
 #include "Core/Logging/Logger.h"
 
-namespace Components
+namespace Game::Components
 {
 
 StartWindow::StartWindow()
@@ -81,4 +82,4 @@ StartWindow::setText(const ImVec2& origin)
   Logger::Debug("<<setText");
 }
 
-}  // namespace Components
+}  // namespace Game::Components

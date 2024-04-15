@@ -44,7 +44,12 @@ void EventsHandler::poll(sf::RenderWindow& window)
       }
       case sf::Event::MouseButtonPressed:
       {
-        isClick = true;
+        isClicked = true;
+        break;
+      }
+      case sf::Event::MouseButtonReleased:
+      {
+        isClicked = false;
         break;
       }
       case sf::Event::Closed:
@@ -83,6 +88,12 @@ void EventsHandler::close(sf::RenderWindow& window)
     Logger::Info("Close");
     window.close();
   }
+}
+
+bool
+EventsHandler::isClickPressed() const
+{
+  return isClicked;
 }
 
 }  // namespace Core

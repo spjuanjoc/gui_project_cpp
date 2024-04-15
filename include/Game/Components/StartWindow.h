@@ -8,40 +8,39 @@
 #ifndef INCLUDE_GAME_COMPONENTS_STARTWINDOW_H
 #define INCLUDE_GAME_COMPONENTS_STARTWINDOW_H
 
+#include "Game/Components/IDrawable.h"
+
 #include <imgui.h>
 
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Graphics/Sprite.hpp>
-#include <SFML/Graphics/Texture.hpp>
 #include <imgui-SFML.h>
 
-namespace Components
+namespace Game::Components
 {
 
 constexpr auto  START_TEXT     = "TO START PRESS ENTER";
 constexpr auto  START_FILENAME = "share/textures/start.png";
-constexpr float HALF_DIVISOR   = 2.0F;
 
 
-class StartWindow
+class StartWindow : virtual public IDrawable
 {
 public:
   StartWindow();
 
-  void draw(sf::RenderWindow& window);
+  void draw(sf::RenderWindow& window) override;
 
-private:
-  void loadTexturesFiles();
+protected:
+  void loadTexturesFiles() override;
 
-  void setTextures();
+  void setTextures() override;
 
   void setText(const ImVec2& position);
 
+private:
   std::string_view m_text { START_TEXT };
   sf::Texture      m_texture;
   sf::Sprite       m_sprite;
 };
 
-}  // namespace Components
+}  // namespace Game::Components
 
 #endif /* INCLUDE_GAME_COMPONENTS_STARTWINDOW_H */

@@ -9,7 +9,7 @@
 #include "Core/Logging/Logger.h"
 
 
-namespace Components
+namespace Game::Components
 {
 
 Background::Background()
