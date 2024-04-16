@@ -7,6 +7,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Joystick.hpp>
 
+#pragma GCC system_header
 #include "imgui-SFML_export.h"
 
 #if __cplusplus >= 201703L // C++17 and above
