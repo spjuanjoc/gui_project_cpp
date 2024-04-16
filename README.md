@@ -97,5 +97,5 @@ sudo pip3 install conan==1.61.0
 To install ninja: 
 
 ```shell
-pip install --user ninja
+sudo apt install -y ninja-build
 ```
