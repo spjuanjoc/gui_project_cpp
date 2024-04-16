@@ -12,7 +12,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
-namespace Game::Components
+namespace Screen::Components
 {
 
 

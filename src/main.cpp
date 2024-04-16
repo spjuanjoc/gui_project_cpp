@@ -11,15 +11,10 @@
 #include "Core/Initialization/Arguments.h"
 #include "Core/Initialization/Fonts.h"
 #include "Core/Logging/Logger.h"
-#include "Game/Components/Background.h"
-#include "Game/Components/StartWindow.h"
+#include "Screen/Components/Background.h"
+#include "Screen/Components/StartWindow.h"
 
-#include <imgui.h>
-
-#include <SFML/Graphics.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/System/Clock.hpp>
-#include <imgui-SFML.h>
+#include "bindings/imgui-SFML.h"
 
 void
 showKeysBox(Core::EventsHandler& program)
@@ -55,11 +50,11 @@ onMouseEvents(Core::EventsHandler& program, sf::Clock& deltaClock, long long int
 void
 runMainLoop(sf::RenderWindow& main_window)
 {
-  sf::Clock                     deltaClock;
-  Core::EventsHandler           program {};
-  Game::Components::Background  background;
-  Game::Components::StartWindow start_window;
-  long long int                 elapsed = 0;
+  sf::Clock                       deltaClock;
+  Core::EventsHandler             program {};
+  Screen::Components::Background  background;
+  Screen::Components::StartWindow start_window;
+  long long int                   elapsed = 0;
 
   while (main_window.isOpen())
   {
@@ -67,6 +62,7 @@ runMainLoop(sf::RenderWindow& main_window)
     ImGui::SFML::Update(main_window, deltaClock.restart());
 
     main_window.clear();
+    //    ImGui::ShowDemoWindow();
 
     background.draw(main_window);
 
@@ -77,7 +73,7 @@ runMainLoop(sf::RenderWindow& main_window)
     }
     else
     {
-      //      ImGui::ShowMetricsWindow();
+      //          ImGui::ShowMetricsWindow();
       start_window.draw(main_window);
     }
 
@@ -96,10 +92,10 @@ main(int argc, const char* argv[])
   sf::RenderWindow main_window(sf::VideoMode(args.width, args.height), WINDOW_TITLE);
 
   main_window.setFramerateLimit(args.frame_rate);
-  ImGui::SFML::Init(main_window);
+  bool isInit = ImGui::SFML::Init(main_window);
   ImGui::GetStyle().ScaleAllSizes(args.scale);
   Core::Initialization::loadFonts();
-  ImGui::SFML::UpdateFontTexture();
+  bool isFont = ImGui::SFML::UpdateFontTexture();
   ImGui::GetStyle().ScaleAllSizes(args.scale);
   ImGui::GetIO().FontGlobalScale = args.scale;
 

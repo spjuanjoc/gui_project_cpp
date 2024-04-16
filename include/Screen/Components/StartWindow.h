@@ -8,13 +8,12 @@
 #ifndef INCLUDE_GAME_COMPONENTS_STARTWINDOW_H
 #define INCLUDE_GAME_COMPONENTS_STARTWINDOW_H
 
-#include "Game/Components/IDrawable.h"
+#include "Screen/Components/IDrawable.h"
 
-#include <imgui.h>
+#pragma GCC system_header
+  #include <imgui.h>
 
-#include <imgui-SFML.h>
-
-namespace Game::Components
+namespace Screen::Components
 {
 
 constexpr auto  START_TEXT     = "TO START PRESS ENTER";

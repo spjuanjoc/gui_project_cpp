@@ -6,21 +6,24 @@
 */
 
 #include "Core/Events/EventsHandler.h"
+
 #include "Core/Logging/Logger.h"
 
+#include "bindings/imgui-SFML.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
-#include <imgui-SFML.h>
 
 namespace Core
 {
 
-void EventsHandler::poll(sf::RenderWindow& window)
+void
+EventsHandler::poll(sf::RenderWindow& window)
 {
-  sf::Event event{};
+  sf::Event event {};
+
   while (window.pollEvent(event))
   {
-    ImGui::SFML::ProcessEvent(event);
+    ImGui::SFML::ProcessEvent(window, event);
 
     switch (event.type)
     {
@@ -64,7 +67,8 @@ void EventsHandler::poll(sf::RenderWindow& window)
   }  // End of poll event
 }
 
-void EventsHandler::pauseResume()
+void
+EventsHandler::pauseResume()
 {
   if (KEY_NAMES::Enter == pressedKey())
   {
@@ -81,7 +85,8 @@ void EventsHandler::pauseResume()
   }
 }
 
-void EventsHandler::close(sf::RenderWindow& window)
+void
+EventsHandler::close(sf::RenderWindow& window)
 {
   if ((isShift || isControl) && (m_key == KEY_NAMES::W || m_key == KEY_NAMES::Q))
   {

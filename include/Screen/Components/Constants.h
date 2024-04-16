@@ -10,7 +10,7 @@
 
 #include <cstdint>
 
-namespace Game::Components
+namespace Screen::Components
 {
 constexpr float QUARTER_DIVISOR = 4.0F;
 constexpr float HALF_DIVISOR    = 2.0F;

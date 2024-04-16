@@ -11,7 +11,9 @@
 #include "Core/Logging/Logger.h"
 
 #include <filesystem>
-#include <imgui.h>
+
+#pragma GCC system_header
+  #include <imgui.h>
 
 namespace Core::Initialization
 {

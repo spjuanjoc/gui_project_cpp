@@ -8,13 +8,13 @@
 #ifndef COMPONENTS_BACKGROUND_H
 #define COMPONENTS_BACKGROUND_H
 
-#include "Game/Components/IDrawable.h"
+#include "Screen/Components/IDrawable.h"
 
 #include <memory>
 
 #include <SFML/Graphics/RectangleShape.hpp>
 
-namespace Game::Components
+namespace Screen::Components
 {
 constexpr auto BACKGROUND_FILENAME = "share/textures/background/regular_pine.png";
 

@@ -5,12 +5,12 @@
  * @date    2024-04-14
  */
 
-#include "Game/Components/StartWindow.h"
-#include "Game/Components/Constants.h"
+#include "Screen/Components/StartWindow.h"
+#include "Screen/Components/Constants.h"
 
 #include "Core/Logging/Logger.h"
 
-namespace Game::Components
+namespace Screen::Components
 {
 
 StartWindow::StartWindow()

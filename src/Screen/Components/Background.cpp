@@ -5,11 +5,11 @@
  * @date    2024-04-14
  */
 
-#include "Game/Components/Background.h"
+#include "Screen/Components/Background.h"
 #include "Core/Logging/Logger.h"
 
 
-namespace Game::Components
+namespace Screen::Components
 {
 
 Background::Background()
