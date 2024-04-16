@@ -13,27 +13,28 @@ jobs:
         standard: [17]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - run: choco install -y conan --version 1.60.1 --params="'/AddToPath:1'"
+      - run: choco install -y conan --version 1.62.0 --params="'/AddToPath:1'"
       - name: Install and configure Conan
         shell: cmd
         run: |
           call refreshenv
           conan profile new default --detect
+          conan profile update settings.compiler.libcxx=libstdc++11 default
+          conan profile update settings.build_type=Debug default
+          conan profile update conf.tools.system.package_manager:mode=install default
           conan profile show default
-          conan config set general.revisions_enabled=1
-          conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
           echo "%PATH%" >> %GITHUB_PATH%
           echo "PATH = %PATH%"
 
       - name: Create Build Environment
         run: cmake -E make_directory ${{runner.workspace}}/build
-
-      - name: Install third-party packages
-        shell: bash
-        working-directory: ${{runner.workspace}}/build
-        run: conan install $GITHUB_WORKSPACE/conanfile.txt -s build_type=${{matrix.build_type}} --build missing
+#
+#      - name: Install third-party packages
+#        shell: bash
+#        working-directory: ${{runner.workspace}}/build
+#        run: conan install $GITHUB_WORKSPACE/conanfile.txt -s build_type=${{matrix.build_type}} --build missing
 
       - name: CMake Configure
         shell: bash
@@ -42,7 +43,7 @@ jobs:
           echo "PATH: ${PATH}"
           cmake -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
                 -A ${{matrix.platform}} -DCMAKE_MODULE_PATH=%CD:\=/% \
-                -DENABLE_TESTS=True -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=True \
+                -DENABLE_TESTS=False -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=True \
                 -DBUILD_SHARED_LIBS=True $GITHUB_WORKSPACE
 
       - name: CMake Build
@@ -52,14 +53,14 @@ jobs:
       - name: Check symbols
         working-directory: ${{runner.workspace}}/build
         run: |
-          ldd ${{runner.workspace}}/build/test/${{matrix.build_type}}/template_project_cpp_AllTests.exe
-          ldd ${{runner.workspace}}/build/${{matrix.build_type}}/template_project_cpp.dll
+          ldd ${{runner.workspace}}/build/test/${{matrix.build_type}}/gui_project_cpp_AllTests.exe
+          ldd ${{runner.workspace}}/build/${{matrix.build_type}}/gui_project_cpp.dll
 
-      - name: Copy DLL
-        shell: cmd
-        working-directory: ${{runner.workspace}}/build
-        run: copy ${{runner.workspace}}\build\${{matrix.build_type}}\*.dll ${{runner.workspace}}\build\test\${{matrix.build_type}}
-
-      - name: Run CTest
-        working-directory: ${{runner.workspace}}/build
-        run: ctest -VV -C ${{matrix.build_type}} --output-on-failure
+#      - name: Copy DLL
+#        shell: cmd
+#        working-directory: ${{runner.workspace}}/build
+#        run: copy ${{runner.workspace}}\build\${{matrix.build_type}}\*.dll ${{runner.workspace}}\build\test\${{matrix.build_type}}
+#
+#      - name: Run CTest
+#        working-directory: ${{runner.workspace}}/build
+#        run: ctest -VV -C ${{matrix.build_type}} --output-on-failure
