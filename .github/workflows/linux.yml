@@ -69,6 +69,6 @@ jobs:
 #        working-directory: ${{runner.workspace}}/build/
 #        run: ctest -V -C ${{matrix.build_type}} --output-on-failure
 
-      - name: cpack
-        working-directory: ${{runner.workspace}}/build
-        run: cpack
+#      - name: cpack
+#        working-directory: ${{runner.workspace}}/build
+#        run: cpack
