@@ -52,19 +52,21 @@ conan_cmake_run(CONANFILE conanfile.txt
 
 ## Find third-party packages
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_BINARY_DIR})
-find_package(fmt REQUIRED)
-find_package(ImGui-SFML REQUIRED)
-find_package(spdlog REQUIRED)
 find_package(argparse REQUIRED)
-
+find_package(fmt REQUIRED)
+find_package(imgui REQUIRED)
+find_package(SFML REQUIRED)
+find_package(spdlog REQUIRED)
 
 ## Target
 target_link_libraries(${PROJECT_NAME}
   PRIVATE
-    fmt::fmt
-    ImGui-SFML::ImGui-SFML
+    ${fmt_LIBRARIES}
+    ${imgui_LIBRARIES}
+    ${SFML_LIBRARIES}
     spdlog::spdlog
 )
+
 target_include_directories(${PROJECT_NAME}
   PRIVATE
     include
@@ -90,10 +92,10 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/share DESTINATION ${CMAKE_CURRENT_BINARY_D
 
 
 ## Install commands
-install(TARGETS ${PROJECT_NAME}
-  RUNTIME DESTINATION "/opt/${PROJECT_NAME}"
-)
+install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION "/opt/${PROJECT_NAME}")
+install(DIRECTORY "${PROJECT_SOURCE_DIR}/share/" DESTINATION "/opt/${PROJECT_NAME}/share")
+install(DIRECTORY "${PROJECT_BINARY_DIR}/logs" DESTINATION "/opt/${PROJECT_NAME}/logs")
 
-SET(CPACK_GENERATOR "DEB")
+set(CPACK_GENERATOR "DEB")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Juan Jose Castellanos <juancho.312@hotmail.com>")
 include(CPack)
