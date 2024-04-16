@@ -8,18 +8,7 @@ GUI project in C++ using ImGui-SFML.
 
 [//]: # (| Coverage | [![codecov]&#40;https://codecov.io/gh/spjuanjoc/gui_project_cpp/branch/main/graph/badge.svg&#41;]&#40;https://codecov.io/gh/spjuanjoc/gui_project_cpp&#41; |)
 
-## Install dependencies with Conan
 
-This configuration is required for conan version lower than 2.0.
-That version still lacks the migration of some libraries related to ImGui and
-SFML.
-
-1. Set up the `bincrafters` repository for the ImGui+SFML package
-
-    ```shell
-    conan config set general.revisions_enabled=1
-    conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
-    ```
 
 
 ## Requirements
@@ -67,7 +56,8 @@ SFML.
     ```shell
     cmake -DCMAKE_MODULE_PATH=$PWD \ 
           -DCMAKE_BUILD_TYPE=Debug \ 
-          -DCMAKE_C_COMPILER=gcc-8 -DCMAKE_CXX_COMPILER=g++-8 .. 
+          -G "Ninja"
+          ..
     cmake --build ./ -- -j8 
     ```
 
