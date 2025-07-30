@@ -14,10 +14,10 @@
 #include "Screen/Components/Background.h"
 #include "Screen/Components/StartWindow.h"
 
-#include "bindings/imgui-SFML.h"
+#include <imgui-SFML.h>
 
 void
-showKeysBox(Core::EventsHandler& program)
+showKeysBox(const Core::EventsHandler& program)
 {
   ImGui::Begin("Key Pressed");
   {
@@ -27,7 +27,7 @@ showKeysBox(Core::EventsHandler& program)
 }
 
 void
-onMouseEvents(Core::EventsHandler& program, sf::Clock& deltaClock, long long int& elapsed)
+onMouseEvents(const Core::EventsHandler& program, const sf::Clock& deltaClock, long long int& elapsed)
 {
   ImGui::Begin("Click Pressed");
   {
@@ -85,17 +85,17 @@ runMainLoop(sf::RenderWindow& main_window)
 int
 main(int argc, const char* argv[])
 {
-  Logger::Info(">>main");
   auto args = Core::parseArguments(argc, argv);
   Logger::SpdLogger::get().setLevel(args.level);
+  Logger::Info(">>main");
 
   sf::RenderWindow main_window(sf::VideoMode(args.width, args.height), WINDOW_TITLE);
 
   main_window.setFramerateLimit(args.frame_rate);
-  bool isInit = ImGui::SFML::Init(main_window);
+  [[maybe_unused]] bool isInit = ImGui::SFML::Init(main_window);
   ImGui::GetStyle().ScaleAllSizes(args.scale);
   Core::Initialization::loadFonts();
-  bool isFont = ImGui::SFML::UpdateFontTexture();
+  [[maybe_unused]]bool isFont = ImGui::SFML::UpdateFontTexture();
   ImGui::GetStyle().ScaleAllSizes(args.scale);
   ImGui::GetIO().FontGlobalScale = args.scale;
 
