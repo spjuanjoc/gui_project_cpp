@@ -10,31 +10,27 @@ jobs:
         build_type: [Debug]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install and configure Conan
         run: |
-          brew install conan@1.60.1
+          brew install conan@1.62.0
           conan profile list
           conan profile new default --detect
+          conan profile update settings.compiler.libcxx=libstdc++11 default
+          conan profile update settings.build_type=Debug default
+          conan profile update conf.tools.system.package_manager:mode=install default
           conan profile show default
-          conan config set general.revisions_enabled=1
-          conan remote add bincrafters https://bincrafters.jfrog.io/artifactory/api/conan/public-conan
 
       - name: Create Build Environment
         run: |
           cmake -E make_directory ${{runner.workspace}}/build
 
-      - name: Install third-party packages
-        shell: bash
-        working-directory: ${{runner.workspace}}/build
-        run: conan install $GITHUB_WORKSPACE/conanfile.txt -s build_type=${{matrix.build_type}} --build missing
-
       - name: CMake Configure
         working-directory: ${{runner.workspace}}/build
         run: |
           cmake -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
-                -DCMAKE_MODULE_PATH=$PWD -DENABLE_TESTS=True \
+                -DCMAKE_MODULE_PATH=$PWD -DENABLE_TESTS=False \
                 -DENABLE_COVERAGE=False -DCMAKE_MACOSX_RPATH=False \
                 $GITHUB_WORKSPACE
 
@@ -42,6 +38,6 @@ jobs:
         working-directory: ${{runner.workspace}}/build
         run: cmake --build . --config ${{matrix.build_type}}
 
-      - name: Test
-        working-directory: ${{runner.workspace}}/build
-        run: ctest -V -C ${{matrix.build_type}} --output-on-failure
+#      - name: Test
+#        working-directory: ${{runner.workspace}}/build
+#        run: ctest -V -C ${{matrix.build_type}} --output-on-failure

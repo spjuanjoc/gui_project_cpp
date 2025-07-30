@@ -18,8 +18,8 @@ constexpr auto LOGGER_NAME     = "multi_sink";
 constexpr auto LOGGER_FILENAME = "logs/file_logger.log";
 constexpr auto MAX_FILE_SIZE   = 1024 * 1024 * 2;  // 2 MB supported by Code Insight
 constexpr auto MAX_FILES       = 5;
-constexpr auto CONSOLE_LEVEL   = spdlog::level::level_enum::info;
-constexpr auto FILE_LEVEL      = spdlog::level::level_enum::trace;
+constexpr auto CONSOLE_LEVEL   = spdlog::level::level_enum::debug;
+constexpr auto FILE_LEVEL      = spdlog::level::level_enum::off;
 
 /**
  * Logger class that wraps the spdlog objects for a multisink singleton logger.
@@ -70,6 +70,7 @@ private:
   log_level_e    m_file_level{FILE_LEVEL};
   console_sink_t m_console_sink;
   file_sink_t    m_file_sink;
+  std::vector<spdlog::sink_ptr> m_sinks;
 };
 
 template<typename FormatString, typename... Args>

@@ -129,12 +129,16 @@ function(set_compiler_options TARGET_NAME)
   endif()
 
   target_compile_options(${TARGET_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:${COMPILER_OPTIONS}>) # for header-only use INTERFACE
-  target_compile_features(${TARGET_NAME} PUBLIC cxx_std_20)
+  target_compile_features(${TARGET_NAME} PUBLIC cxx_std_23)
+
+  get_property(TARGET_STD TARGET ${TARGET_NAME} PROPERTY CXX_STANDARD)
 
   message (STATUS "Target name:     ${TARGET_NAME}")
   message (STATUS "Target options:  ${COMPILER_OPTIONS}")
   message (STATUS "Compiler:        ${CMAKE_CXX_COMPILER}")
   message (STATUS "Compiler ID:     ${CMAKE_CXX_COMPILER_ID}")
   message (STATUS "Platform:        ${CMAKE_SYSTEM_NAME}")
+  message (STATUS "Generator:       ${CMAKE_MAKE_PROGRAM}")
+  message (STATUS "c++ Standard:    ${TARGET_STD}")
 
 endfunction()

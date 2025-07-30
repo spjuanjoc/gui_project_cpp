@@ -6,65 +6,55 @@
  * @date    2021-10-12
 */
 
+#include "Core/Constants/Constants.h"
 #include "Core/Events/EventsHandler.h"
 #include "Core/Initialization/Arguments.h"
-#include "Core/Initialization/Constants.h"
+#include "Core/Initialization/Fonts.h"
 #include "Core/Logging/Logger.h"
+#include "Screen/Components/Background.h"
+#include "Screen/Components/StartWindow.h"
 
-#include <imgui.h>
-
-#include <SFML/Graphics.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/System/Clock.hpp>
 #include <imgui-SFML.h>
 
-#include <filesystem>
-
 void
-loadFonts()
+showKeysBox(const Core::EventsHandler& program)
 {
-  try
+  ImGui::Begin("Key Pressed");
   {
-    ImGuiIO& gui_io = ImGui::GetIO();
-    gui_io.Fonts->Clear();
-
-    if (std::filesystem::exists(FONT_FILENAME))
-      gui_io.Fonts->AddFontFromFileTTF(FONT_FILENAME, FONT_SIZE);
-    else
-      Logger::Error("The fonts file {0} does not exist. Using the default font.", FONT_FILENAME);
+    ImGui::TextUnformatted(fmt::format("Key pressed: {}", program.pressedKeyName()).c_str());
   }
-  catch (const std::exception& exception)
-  {
-    Logger::Error("The fonts could not be loaded. {0}", exception.what());
-  }
-  catch (...)
-  {
-    Logger::Error("The fonts could not be loaded.");
-  }
+  ImGui::End();
 }
 
-int
-main(int argc, const char* argv[])
+void
+onMouseEvents(const Core::EventsHandler& program, const sf::Clock& deltaClock, long long int& elapsed)
 {
-  Logger::Info(">>main");
-  auto args = Core::parseArguments(argc, argv);
-  Logger::SpdLogger::get().setLevel(args.level);
+  ImGui::Begin("Click Pressed");
+  {
+    if (program.isClickPressed())
+    {
+      auto milliseconds = deltaClock.getElapsedTime().asMilliseconds();
+      auto microseconds = deltaClock.getElapsedTime().asMicroseconds();
+      elapsed += microseconds;
+      Logger::Info("{:<3} ms, {:<6} us, elapsed {} us.", milliseconds, microseconds, elapsed);
+      ImGui::TextUnformatted(fmt::format("Click pressed for {} us.", elapsed).c_str());
+    }
+    else
+    {
+      ImGui::TextUnformatted(fmt::format("Click pressed for {} us.", elapsed).c_str());
+    }
+  }
+  ImGui::End();
+}
 
-  sf::RenderWindow main_window(sf::VideoMode(args.width, args.height), WINDOW_TITLE);
-  main_window.setFramerateLimit(args.frame_rate);
-  sf::Clock deltaClock;
-
-  ImGui::SFML::Init(main_window);
-  ImGui::GetStyle().ScaleAllSizes(args.scale);
-  loadFonts();
-  ImGui::SFML::UpdateFontTexture();
-  Core::EventsHandler program {};
-
-  ImGui::GetStyle().ScaleAllSizes(args.scale);
-  ImGui::GetIO().FontGlobalScale = args.scale;
-
-  constexpr std::array             options { "Option1", "Option2", "Option3" };
-  std::array<bool, options.size()> states {};
+void
+runMainLoop(sf::RenderWindow& main_window)
+{
+  sf::Clock                       deltaClock;
+  Core::EventsHandler             program {};
+  Screen::Components::Background  background;
+  Screen::Components::StartWindow start_window;
+  long long int                   elapsed = 0;
 
   while (main_window.isOpen())
   {
@@ -72,33 +62,44 @@ main(int argc, const char* argv[])
     ImGui::SFML::Update(main_window, deltaClock.restart());
 
     main_window.clear();
+    //    ImGui::ShowDemoWindow();
 
-    // Box 1
-    ImGui::Begin("Options");
+    background.draw(main_window);
+
+    if (program.isRunning())
     {
-      std::size_t index = 0;
-      for (const auto& item : options)
-      {
-        ImGui::Checkbox(fmt::format("{} : {}", index + 1, item).c_str(), &states.at(index));
-        ++index;
-      }
+      showKeysBox(program);
+      onMouseEvents(program, deltaClock, elapsed);
     }
-    ImGui::End();
-
-
-    // Box 2
-    ImGui::Begin("Key Pressed");
+    else
     {
-      ImGui::TextUnformatted(fmt::format("Key pressed: {}", program.pressedKeyName()).c_str());
-      //      std::this_thread::sleep_for(50ms);
+      //          ImGui::ShowMetricsWindow();
+      start_window.draw(main_window);
     }
-    ImGui::End();
-    //    }
-
 
     ImGui::SFML::Render(main_window);
     main_window.display();
   }
+}
+
+int
+main(int argc, const char* argv[])
+{
+  auto args = Core::parseArguments(argc, argv);
+  Logger::SpdLogger::get().setLevel(args.level);
+  Logger::Info(">>main");
+
+  sf::RenderWindow main_window(sf::VideoMode(args.width, args.height), WINDOW_TITLE);
+
+  main_window.setFramerateLimit(args.frame_rate);
+  [[maybe_unused]] bool isInit = ImGui::SFML::Init(main_window);
+  ImGui::GetStyle().ScaleAllSizes(args.scale);
+  Core::Initialization::loadFonts();
+  [[maybe_unused]]bool isFont = ImGui::SFML::UpdateFontTexture();
+  ImGui::GetStyle().ScaleAllSizes(args.scale);
+  ImGui::GetIO().FontGlobalScale = args.scale;
+
+  runMainLoop(main_window);
 
   ImGui::SFML::Shutdown();
   Logger::Info("<<main");

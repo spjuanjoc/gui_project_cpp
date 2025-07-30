@@ -6,7 +6,7 @@ AlignConsecutiveAssignments: Consecutive
 AlignConsecutiveDeclarations: Consecutive
 AlignConsecutiveMacros: Consecutive
 AlignEscapedNewlines: DontAlign
-AlignOperands: Align
+AlignOperands: AlignAfterOperator
 AlignTrailingComments: true
 AllowAllArgumentsOnNextLine: false
 AllowAllConstructorInitializersOnNextLine: true
@@ -16,9 +16,8 @@ AllowShortCaseLabelsOnASingleLine: false
 AllowShortEnumsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: InlineOnly
 AllowShortIfStatementsOnASingleLine: Never
-AllowShortLambdasOnASingleLine: All
+AllowShortLambdasOnASingleLine: None
 AllowShortLoopsOnASingleLine: false
-#AlwaysBreakAfterDefinitionReturnType: None
 AlwaysBreakAfterReturnType: TopLevel
 AlwaysBreakBeforeMultilineStrings: true
 AlwaysBreakTemplateDeclarations: Yes
@@ -43,14 +42,12 @@ IncludeBlocks: Regroup
 IncludeCategories:
   - Regex:         '^((<|")(gtest|gmock|catch))' # test headers have the lowest priority
     Priority:      5
-  - Regex:         '<[[:alnum:].]+>' # std headers
+  - Regex:         '<[[:alnum:]_]+>' # std headers
     Priority:      4
-  - Regex:         '^"([A-Za-z0-9.\/-_])+"'
+  - Regex:         '^<([A-Za-z0-9\/\+-_])+(.h|.hpp)>' # non-local headers <> .h or .hpp
     Priority:      3
-    CaseSensitive: true
-  - Regex:         '^<([A-Za-z0-9\/-_])+.h>'
+  - Regex:         '^"([A-Za-z0-9.\/-_])+"' # local headers ""
     Priority:      2
-    CaseSensitive: true
 IndentCaseLabels: true
 IndentPPDirectives: BeforeHash
 IndentWidth: 2
@@ -61,7 +58,7 @@ MaxEmptyLinesToKeep: 2
 NamespaceIndentation: None
 PenaltyBreakBeforeFirstCallParameter: 100
 PointerAlignment: Left
-ReflowComments: false
+#ReflowComments: IndentOnly
 SortIncludes: CaseSensitive
 SortUsingDeclarations: true
 SpaceAfterCStyleCast: true
