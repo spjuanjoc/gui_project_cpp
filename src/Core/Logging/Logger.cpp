@@ -24,10 +24,13 @@ SpdLogger::SpdLogger()
     m_file_sink->set_pattern("%Y-%m-%dT%X.%e%z [%^%3!l%$] t[%t]: %v");
     m_file_sink->set_level(spdlog::level::trace);
 
+    m_sinks.push_back(m_console_sink);
+    m_sinks.push_back(m_file_sink);
+
     spdlog::set_default_logger(
       std::make_shared<spdlog::logger>(m_name,
                                        spdlog::sinks_init_list({m_console_sink, m_file_sink})));
-    spdlog::set_level(m_file_level);
+    spdlog::set_level(spdlog::level::level_enum::debug);
   }
   catch (const spdlog::spdlog_ex& ex)
   {
@@ -42,7 +45,9 @@ SpdLogger::~SpdLogger()
 
 void SpdLogger::setLevel(spdlog::level::level_enum level)
 {
-  m_console_sink->set_level(level);
+  for (auto& sink : m_sinks)
+  {
+    sink->set_level(level);
+  }
 }
-
 }  // namespace Logger

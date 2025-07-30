@@ -61,10 +61,11 @@ static spdlog::level::level_enum parseLevel(std::uint32_t level)
  */
 static Arguments parseArguments(int argc, const char* argv[])
 {
-  Logger::Debug(">>");
+  Logger::Debug(">>parseArguments");
   Arguments                arguments{};
   argparse::ArgumentParser parser(NAME, VERSION);
 
+  // TODO: Add --help
   parser.add_argument("-l", "--level").help("The log level").default_value(DEFAULT_LEVEL).scan<'i', std::uint32_t>();
   parser.add_argument("-w", "--width").help("The screen width").default_value(WINDOW_WIDTH).scan<'i', std::uint32_t>();
   parser.add_argument("-h", "--height").help("The screen height").default_value(WINDOW_HEIGHT).scan<'i', std::uint32_t>();
@@ -79,7 +80,7 @@ static Arguments parseArguments(int argc, const char* argv[])
   arguments.scale      = parser.get<float>("--scale");
   arguments.level      = parseLevel(parser.get<std::uint32_t>("--level"));
 
-  Logger::Debug("<<");
+  Logger::Debug("<<parseArguments");
 
   return arguments;
 }

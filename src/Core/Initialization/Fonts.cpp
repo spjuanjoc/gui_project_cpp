@@ -12,8 +12,7 @@
 
 #include <filesystem>
 
-#pragma GCC system_header
-  #include <imgui.h>
+#include <imgui.h>
 
 namespace Core::Initialization
 {
